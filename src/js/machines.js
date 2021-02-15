@@ -16,7 +16,7 @@ export class Vendor {
   }
 };
 
-export class MiningMach {
+export class MiningMachine {
   constructor() {
     this.fuel = 0;
   }
@@ -37,60 +37,60 @@ export class Smelter {
   }
 
   CoalRefuel(machine) {
-    machine.fuel = machine.fuel + 3;
+    machine.fuel = machine.fuel + 5;
   }
 
   SmeltWood(playerInventory) {
     if (this.fuel > 0) {
-      this.fuel--;
       if (playerInventory.wood >= this.woodtoCoal) {
         playerInventory.wood = playerInventory.wood - this.woodtoCoal;
         playerInventory.coal++;
+        this.fuel--;
       } else {
         alert('Not enough wood.');
       }
       return (playerInventory);
     } else {
-      alert('Not enough fuel.')
+      alert('Not enough fuel.');
     }
   }
 
   SmeltCopper(playerInventory) {
     if (this.fuel > 0) {
-      this.fuel--;
       if (playerInventory.copper >= this.copperToIngot) {
         playerInventory.copper = playerInventory.copper - this.copperToIngot;
         playerInventory.copperIngot++;
+        this.fuel--;
       } else {
-        alert('Not enough copper.')
+        alert('Not enough copper.');
       }
       return (playerInventory);
     } else {
-      alert('Not enough fuel.')
+      alert('Not enough fuel.');
     }
   }
 
   SmeltIron(playerInventory) {
     if (this.fuel > 0) {
-      this.fuel--;
       if (playerInventory.iron >= this.ironToIngot) {
         playerInventory.iron = playerInventory.iron - this.ironToIngot;
         playerInventory.ironIngot++;
+        this.fuel--;
       } else {
-        alert('Not enough iron.')
+        alert('Not enough iron.');
       }
       return (playerInventory);
     } else {
-      alert('Not enough fuel.')
+      alert('Not enough fuel.');
     }
   }
 
   SmeltGold(playerInventory) {
     if (this.fuel > 0) {
-      this.fuel--;
       if (playerInventory.gold >= this.goldToIngot) {
         playerInventory.gold = playerInventory.gold - this.goldToIngot;
         playerInventory.goldIngot++;
+        this.fuel--;
       } else {
         alert('Not enough gold.');
       }

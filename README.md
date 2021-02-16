@@ -23,6 +23,10 @@ The purpose of this TEMPLATE
 
 * Once npm has completed installing, type the following:
 
+> npm install perlin-simplex
+
+* Once perlin-simplex has completed installing, type the following:
+
 > npm run start
 
 * The project will then open in your default web browser

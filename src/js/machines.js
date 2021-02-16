@@ -1,3 +1,39 @@
+///////////////////////////////////////////////// Vendor Information //////////////////////////////
+// Vendor should be called from the new keyword
+// arguments are used as such
+
+/*
+let invObj = {
+	wood: 5,
+  currency: 15
+}
+
+const newVendor = new Vendor()
+newVendor.sell('wood', invObj);
+console.log(newVendor)
+{
+  copperBuy: 10,
+  copperQuantity: 5,
+  copperSell: 5,
+  fuel: 0,
+  goldBuy: 20,
+  goldQuantity: 0,
+  goldSell: 10,
+  ironBuy: 15,
+  ironQuantity: 5,
+  ironSell: 8,
+  woodBuy: 5,
+  woodQuantity: 6,
+  woodSell: 2
+}
+
+console.log(invObj);
+{
+  currency: 17,
+  wood: 4
+}
+*/
+///////////////////////////////////////////////////////////// Vendor Info End //////////////////////
 export class Vendor {
   constructor() {
     this.fuel = 0;
@@ -14,15 +50,26 @@ export class Vendor {
     this.ironBuy = 15;
     this.goldBuy = 20;
   }
-
-  sell(item) {
-
+  sell(item, inventoryObj) {
+		if (inventoryObj[item] > 0) {
+    	inventoryObj.currency += this[`${item}Sell`];
+      inventoryObj[item] -= 1;
+      this[`${item}Quantity`] += 1;
+    } else {
+    	alert(`Not Enough ${item}`);
+    }
   }
-
-  buy(item) {
-
+  buy(item, inventoryObj) {
+    if (InventoryObj.currency >= this[`${item}Buy`]) {
+      this[`${item}Quantity`] -= 1;
+      inventoryObj.currency -= this[`${item}Buy`];
+      inventoryObj[item] += 1;
+    } else {
+    	alert('Not Enough Money');
+    }
   }
 };
+
 
 export class MiningMachine {
   constructor() {

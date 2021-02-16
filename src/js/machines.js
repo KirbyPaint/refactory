@@ -14,11 +14,33 @@ export class Vendor {
     this.ironBuy = 15;
     this.goldBuy = 20;
   }
+
+  sell(item) {
+
+  }
+
+  buy(item) {
+
+  }
 };
 
 export class MiningMachine {
   constructor() {
     this.fuel = 0;
+  }
+
+  MinMach(nodeType, nodeQuantity) {
+    this.storage = 0;
+    for (let i = 0; i < nodeQuantity; i++) {
+      setTimeout(function () {
+        this.storage++;
+        nodeQuantity--;
+      }, 10000)
+    }
+    let minerals = [nodeType, this.storage];
+    return minerals;
+
+
   }
 };
 
@@ -31,6 +53,7 @@ export class Smelter {
     this.ironToIngot = 3;
     this.goldToIngot = 3;
   }
+
 
   WoodRefuel(machine) {
     machine.fuel++;

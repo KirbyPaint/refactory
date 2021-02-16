@@ -1,8 +1,7 @@
 ///////////////////////////////////////////////// Vendor Information //////////////////////////////
-// Vendor should be called from the new keyword
-// arguments are used as such
-
 /*
+Vendor should be called from the new keyword
+arguments are used as such
 let invObj = {
 	wood: 5,
   currency: 15
@@ -70,6 +69,16 @@ export class Vendor {
   }
 };
 
+////////////////////////////////////////Mining Machine Notes///////////////////////
+/*
+  MiningMachine runs on an interval and stores values on each interval tick. 
+  The this.storage value is what the player pulls from during interaction.
+  The interval ticks are self reliant and will stop when the value hits zero.
+
+  to withdrawl the player just passes their object through the argument .withdrawal(inventoryObj)
+  withdrawal adds to the inventory with the argument that was fed on mineNode.
+  to mine, the argument should be called with plain english argument mineNode('iron', 20)
+*/
 
 export class MiningMachine {
   constructor() {
@@ -78,7 +87,7 @@ export class MiningMachine {
     this.type = null;
     this.currentMine = null;
   }
-  withdrawl(inventoryObj) {
+  withdrawal(inventoryObj) {
     inventoryObj[this.type] += this.storage;
     this.storage = 0;
   }
@@ -95,7 +104,6 @@ export class MiningMachine {
     }, 10000)
   }
 }
-
 
 export class Smelter {
   constructor() {

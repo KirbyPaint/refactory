@@ -49,19 +49,37 @@ $(document).ready(function() {
 
   // Function to simulate character movement on grid
   // Listens for the arrow keys to be pressed, and when pressed
+
+  let windowWidth = $(window).width();
+  let windowHeight = $(window).height();
+  let pageWidth = $(document).width();
+  let pageHeight = $(document).height();
+  let centerWidth = ((pageWidth - windowWidth) / 2);
+  let centerHeight = ((pageHeight - windowHeight) / 2);
+
+  $("#windowWidth").text(windowWidth);
+  $("#windowHeight").text(windowHeight);
+  $("#mapWidth").text(pageWidth);
+  $("#mapHeight").text(pageHeight);
+
+  window.scrollTo(centerWidth, centerHeight);
+
+  let charCenterWidth = centerWidth;
+  let charCenterHeight = centerHeight;
   window.addEventListener("keydown", function(event) {
     let x = character.location_x;
     let y = character.location_y;
-    window.scrollTo();
+    
 
-    // let element = `#${x}_${y}`;
-    // element.scrollTo(0,0);
-    // const scrollLock = document.getElementById(`#${parseInt(x)}_${parseInt(y)}`);
-    // scrollLock.scrollIntoView({
-    //   behavior: "smooth",
-    //   block: "center",
-    //   inline: "center"
-    // });
+
+
+    // Theory: divide the 10,000 page size by current coordinate (for both directions)
+    // Then subtract 1/2 the window width/height as applies to re-center the screen on player
+    // maybe 
+
+    // let mathWidth = (charWidth - windowWidth);
+    // let mathHeight = (charHeight - windowHeight);
+
     if (event.key == "ArrowLeft") {
       $(`#${x}_${y}`).removeClass("character"); // Removes class from prev. square
       character.move(-1, 0, "left");            // Move character object
@@ -69,6 +87,10 @@ $(document).ready(function() {
       $(`#${x}_${y}`).addClass("character");    // Adds class to current square
       $("#x").text(character.location_x);       // Updates HUD text
       $("#output").text(event.key);             // Displays key press on HUD
+      charCenterWidth -= 50;
+      window.scrollTo(charCenterWidth, charCenterHeight);
+      $("#spawnWidth").text(charCenterWidth);
+      $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowUp") {
       $(`#${x}_${y}`).removeClass("character");
@@ -77,6 +99,10 @@ $(document).ready(function() {
       $(`#${x}_${y}`).addClass("character");
       $("#y").text(character.location_y);
       $("#output").text(event.key);
+      charCenterHeight -= 50;
+      window.scrollTo(charCenterWidth, charCenterHeight);
+      $("#spawnWidth").text(charCenterWidth);
+      $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowRight") {
       $(`#${x}_${y}`).removeClass("character");
@@ -85,6 +111,10 @@ $(document).ready(function() {
       $(`#${x}_${y}`).addClass("character");
       $("#x").text(character.location_x);
       $("#output").text(event.key);
+      charCenterWidth += 50;
+      window.scrollTo(charCenterWidth, charCenterHeight);
+      $("#spawnWidth").text(charCenterWidth);
+      $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowDown") {
       $(`#${x}_${y}`).removeClass("character");
@@ -93,6 +123,10 @@ $(document).ready(function() {
       $(`#${x}_${y}`).addClass("character");
       $("#y").text(character.location_y);
       $("#output").text(event.key);
+      charCenterHeight += 50;
+      window.scrollTo(charCenterWidth, charCenterHeight);
+      $("#spawnWidth").text(charCenterWidth);
+      $("#spawnHeight").text(charCenterHeight);
     }
   }, true);
 

@@ -28,6 +28,8 @@ $(document).ready(function() {
         $(`#${a}_${k}`).css("background-color", `rgb(169, 188, 208)`);
       } else if (gameworld.world[a][k].type == "gold") {
         $(`#${a}_${k}`).css("background-color", `rgb(255, 239, 159)`);
+      } else if (gameworld.world[a][k].type == "coal") {
+        $(`#${a}_${k}`).css("background-color", `rgb(10, 10, 10)`);
       } else if (gameworld.world[a][k].type == "water") {
         $(`#${a}_${k}`).css("background-color", `rgb(50, 80, 200)`);
       } else if (gameworld.world[a][k].type == "tree") {
@@ -118,5 +120,6 @@ $(document).ready(function() {
     const coords = currentID.split("_");
     $("#mouse_x").text(coords[0]);
     $("#mouse_y").text(coords[1]);
+    $("#select").text(gameworld.world[coords[0]][coords[1]].type)
   });
 });

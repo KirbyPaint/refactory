@@ -1,3 +1,38 @@
+///////////////////////////////////////////////// Vendor Information //////////////////////////////
+/*
+Vendor should be called from the new keyword
+arguments are used as such
+let invObj = {
+	wood: 5,
+  currency: 15
+}
+
+const newVendor = new Vendor()
+newVendor.sell('wood', invObj);
+console.log(newVendor)
+{
+  copperBuy: 10,
+  copperQuantity: 5,
+  copperSell: 5,
+  fuel: 0,
+  goldBuy: 20,
+  goldQuantity: 0,
+  goldSell: 10,
+  ironBuy: 15,
+  ironQuantity: 5,
+  ironSell: 8,
+  woodBuy: 5,
+  woodQuantity: 6,
+  woodSell: 2
+}
+
+console.log(invObj);
+{
+  currency: 17,
+  wood: 4
+}
+*/
+///////////////////////////////////////////////////////////// Vendor Info End //////////////////////
 export class Vendor {
   constructor() {
     this.fuel = 0;
@@ -14,35 +49,61 @@ export class Vendor {
     this.ironBuy = 15;
     this.goldBuy = 20;
   }
-
-  sell(item) {
-
+  sell(item, inventoryObj) {
+		if (inventoryObj[item] > 0) {
+    	inventoryObj.currency += this[`${item}Sell`];
+      inventoryObj[item] -= 1;
+      this[`${item}Quantity`] += 1;
+    } else {
+    	alert(`Not Enough ${item}`);
+    }
   }
-
-  buy(item) {
-
+  buy(item, inventoryObj) {
+    if (InventoryObj.currency >= this[`${item}Buy`]) {
+      this[`${item}Quantity`] -= 1;
+      inventoryObj.currency -= this[`${item}Buy`];
+      inventoryObj[item] += 1;
+    } else {
+    	alert('Not Enough Money');
+    }
   }
 };
+
+////////////////////////////////////////Mining Machine Notes///////////////////////
+/*
+  MiningMachine runs on an interval and stores values on each interval tick. 
+  The this.storage value is what the player pulls from during interaction.
+  The interval ticks are self reliant and will stop when the value hits zero.
+
+  to withdrawl the player just passes their object through the argument .withdrawal(inventoryObj)
+  withdrawal adds to the inventory with the argument that was fed on mineNode.
+  to mine, the argument should be called with plain english argument mineNode('iron', 20)
+*/
 
 export class MiningMachine {
   constructor() {
-    this.fuel = 0;
-  }
-
-  MinMach(nodeType, nodeQuantity) {
+    this.fuel = 500;
     this.storage = 0;
-    for (let i = 0; i < nodeQuantity; i++) {
-      setTimeout(function () {
-        this.storage++;
-        nodeQuantity--;
-      }, 10000)
-    }
-    let minerals = [nodeType, this.storage];
-    return minerals;
-
-
+    this.type = null;
+    this.currentMine = null;
   }
-};
+  withdrawal(inventoryObj) {
+    inventoryObj[this.type] += this.storage;
+    this.storage = 0;
+  }
+  mineNode(nodeType, nodeQuantity){
+    this.currentMine = nodeQuantity;
+    this.type = nodeType;
+    const interval = setInterval(() => {
+      this.fuel -= 1;
+      this.storage += 1;
+      this.currentMine -= 1;
+      if (this.currentMine === 0) {
+        clearInterval(interval);
+      }
+    }, 10000)
+  }
+}
 
 export class Smelter {
   constructor() {

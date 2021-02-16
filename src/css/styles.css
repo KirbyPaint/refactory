@@ -8,7 +8,24 @@ body>div {
   flex-direction: column;
 }
 
+/* HUD display box */
+#hud {
+  font-size: 15px;
+  font-family: 'Courier New', Courier, monospace;
+  line-height: 1px;
+  background-color: white;
+  padding: 10px;
+  position: fixed;
+  width: 300px;
+  top: 0px;
+  left: 0px;
+  border: 5px solid red;
+}
 
+/* Character placement class */
+.character {
+  background-color: blue !important;
+}
 
 body>div>div {
   border: 2px solid black;
@@ -16,10 +33,10 @@ body>div>div {
   height:50px;
 }
 
-/* body>div>div:hover {
-  background-color: red;
+body>div>div:hover {
+  background-color: red !important;
 }
 
-body>div:hover {
+/* body>div:hover {
   background-color: orange;
 } */

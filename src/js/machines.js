@@ -26,23 +26,29 @@ export class Vendor {
 
 export class MiningMachine {
   constructor() {
-    this.fuel = 0;
-  }
-
-  MinMach(nodeType, nodeQuantity) {
+    this.fuel = 500;
     this.storage = 0;
-    for (let i = 0; i < nodeQuantity; i++) {
-      setTimeout(function () {
-        this.storage++;
-        nodeQuantity--;
-      }, 10000)
-    }
-    let minerals = [nodeType, this.storage];
-    return minerals;
-
-
+    this.type = null;
+    this.currentMine = null;
   }
-};
+  withdrawl(inventoryObj) {
+    inventoryObj[this.type] += this.storage;
+    this.storage = 0;
+  }
+  mineNode(nodeType, nodeQuantity){
+    this.currentMine = nodeQuantity;
+    this.type = nodeType;
+    const interval = setInterval(() => {
+      this.fuel -= 1;
+      this.storage += 1;
+      this.currentMine -= 1;
+      if (this.currentMine === 0) {
+        clearInterval(interval);
+      }
+    }, 10000)
+  }
+}
+
 
 export class Smelter {
   constructor() {

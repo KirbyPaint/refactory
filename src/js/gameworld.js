@@ -1,3 +1,37 @@
+//interacting with this class:
+
+//Spawning a new world map:
+//   Gameworld.generateWorld() -- no return - populates GameWorld.world with materials
+
+//   GameWorld.point(x,y) -- returns [object]
+//   Give x and y coordinates. returns the memory object for those coordinates.
+
+//Interacting with world:
+//   Adding and removing Items
+
+//   To add Machine to gameWorld
+//   GameWorld.placeItem(x,y,item,amount) -- returns [item,returnAmount] or false
+//   x and y are integers of range (0,200). Amount is an integer of requested amount to place on grid block. Returns an array [item,returnAmount] of the item placed and how many were unable to be placed (0 is success). Returns false if unable.
+
+//   To remove item from gameworld to inventory
+//   GameWorld.removeItem(x,y,amount) -- returns [item,returnAmount] or false
+//   x and y are integers of range (0,200). Amount is an integer of requested amount to remove from grid block. Returns an array [item,returnAmount] of the item removed and how many were succesfully able to be removed. Returns false if unable.
+
+//Placing and removing machines
+
+//   To Add Machine to GameWorld
+//   GameWorld.addMachine(x,y,machine) -- returns [removedMachine,1] or false
+//   x and y are integers of range (0,200). Amount is an integer of requested amount to mine from grid block. Returns an array [machine,1] of the machine added and how many added (should be one). Returns false if unable.
+
+//   To remove Machine from GameWorld to inventory
+//   GameWorld.removeMachine(x,y) -- returns [removedMachine,1] or false
+//   x and y are integers of range (0,200). Amount is an integer of requested amount to mine from grid block. Returns an array [machine,1] of the machine removed. Returns false if unable
+
+//Mining
+//   GameWorld.mine(x,y,amount) -- returns [material,amount] or false
+//   x and y are integers of range (0,200). Amount is an integer of requested amount to mine from grid block. Returns an array [material,amount] of material returned and amount able to be succesfully returned. Returns false if unable
+
+
 export default class GameWorld {
   constructor(width=200,height=200) {
 
@@ -26,10 +60,11 @@ export default class GameWorld {
         newArray[i][j] = {
           item:{
             type:false,
+            max:100,
             amount:0
           },
-          machine:"none",
-          type:""
+          machine:{},
+          type:"grass"
         };
       }
     }
@@ -60,8 +95,13 @@ export default class GameWorld {
       for (let j=0; j<this.height; j++) {
         
         if (materialAllowed[i][j] > one && materialAvailable[i][j] > two && materialPlaced[i][j] > three) {
-          if (this.world[i][j].type == "" || material == "water") {
+          if (this.world[i][j].type == "grass" && material != "water") {
             this.world[i][j].type = material;
+            this.world[i][j].item.type = material;
+            this.world[i][j].item.max = 1000;
+            this.world[i][j].item.amount = this.convertRange(materialPlaced[i][j],0,1,100,1000);
+          } else if (material == "water") {
+            this.world[i][j].type = material; 
           }
         }
       }
@@ -80,9 +120,11 @@ export default class GameWorld {
 
   //interactions
 
+  point(x,y) {
+    return this.world[y][x];
+  }
+
   addMachine(x,y,machine) {
-    //checks if machine space is occupied and type is not a tree / not water
-    //places machine in given spot
     if (this.world[y][x].type != "water" && this.world[y][x].type != "tree" && this.world[y][x].machine == "none") {
       this.world[y][x].machine = machine;
       return [machine,1];
@@ -92,7 +134,6 @@ export default class GameWorld {
   }
 
   removeMachine(x,y) {
-    //checks if machine space is occupied
     if (this.world[y][x].machine != "none") {
       let removedMachine = this.world[y][x].machine;
       this.world[y][x].machine = "none";
@@ -102,18 +143,16 @@ export default class GameWorld {
     }
   }
 
-  placeItem(x,y,item,amount,allowedAmount=100) {
-    //checks if item spot is occupied or is occupied by less then allowedAmount of same type
-    //places item
+  placeItem(x,y,item,amount) {
     if (this.world[y][x].item.type === false || this.world[y][x].item.type == item) {
-      let Itemamount = this.world[y][x].item.amount;
+      let itemAmount = this.world[y][x].item.amount;
       let returnAmount;
-      if (Itemamount + amount > allowedAmount) {
-        returnAmount = (Itemamount + amount) - allowedAmount;
-        this.world[y][x].item.amount = allowedAmount;
+      if (itemAmount + amount > this.world[y][x].item.max) {
+        returnAmount = (itemAmount + amount) - this.world[y][x].item.max;
+        this.world[y][x].item.amount = this.world[y][x].item.max;
       } else {
         returnAmount = 0;
-        this.world[y][x].item.amount = Itemamount + amount;
+        this.world[y][x].item.amount = itemAmount + amount;
       }
       return [item,returnAmount];
     } else {
@@ -121,17 +160,23 @@ export default class GameWorld {
     }
   }
 
-  removeItem(x,y,amount) {
-    //checks if item spot is occupied and how many
-    //removes item from spot
-    //returns item and how many
+  removeItem(x,y,amount=100) {
     if (this.world[y][x].item != []) {
       let removeditem = this.world[y][x].item;
-      //if item 
+
       if (this.world[y][x].item.amount - amount < 0) {
         this.world[y][x].item.type = false;
-        this.world[y][x].item.amount =- amount;
+        this.world[y][x].item.amount = 0;
         return [removeditem.item.type,removeditem.item.amount];
+      
+      } else if (this.world[y][x].item.amount - amount > 0) {
+        this.world[y][x].item.amount =- amount;
+        return [removeditem.item.type,amount];
+      
+      } else if (this.world[y][x].item.amount - amount == 0) {
+        this.world[y][x].item.type = false;
+        this.world[y][x].item.amount = 0;
+        return [removeditem.item.type,amount];
       }
     } else {
       return false;
@@ -139,9 +184,28 @@ export default class GameWorld {
   }
 
   //tree, ore
-  // mine(x,y) {
-  //   //checks if space has minable type
-  //   //removes type
-  //   //returns type
-  // }
+  mine(x,y,amount) {
+    if (["copper","iron","gold","coal"].includes(this.world[y][x].type)) {
+      let removeditem = this.world[y][x].item;
+
+      if (this.world[y][x].item.amount - amount < 0) {
+        this.world[y][x].item.type = false;
+        this.world[y][x].item.amount = 0;
+        this.world[y][x].type = "grass";
+        return [removeditem.item.type,removeditem.item.amount];
+      
+      } else if (this.world[y][x].item.amount - amount > 0) {
+        this.world[y][x].item.amount =- amount;
+        return [removeditem.item.type,amount];
+      
+      } else if (this.world[y][x].item.amount - amount == 0) {
+        this.world[y][x].item.type = false;
+        this.world[y][x].item.amount = 0;
+        this.world[y][x].type = "grass";
+        return [removeditem.item.type,amount];
+      }
+    } else {
+      return false;
+    }
+  }
 }

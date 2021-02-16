@@ -1,67 +1,31 @@
 ///////////////////////////////////////////////// Vendor Information //////////////////////////////
 /*
-Vendor should be called from the new keyword
-arguments are used as such
-let invObj = {
-	wood: 5,
-  currency: 15
-}
-
-const newVendor = new Vendor()
-newVendor.sell('wood', invObj);
-console.log(newVendor)
-{
-  copperBuy: 10,
-  copperQuantity: 5,
-  copperSell: 5,
-  fuel: 0,
-  goldBuy: 20,
-  goldQuantity: 0,
-  goldSell: 10,
-  ironBuy: 15,
-  ironQuantity: 5,
-  ironSell: 8,
-  woodBuy: 5,
-  woodQuantity: 6,
-  woodSell: 2
-}
-
-console.log(invObj);
-{
-  currency: 17,
-  wood: 4
-}
+  Non atm
 */
-///////////////////////////////////////////////////////////// Vendor Info End //////////////////////
+///////////////////////////////////////////////////////////// Vendor Info End ////////////////////////////////////////////
 export class Vendor {
-  constructor() {
+  constructor(x,y) {
     this.fuel = 0;
-    this.woodSell = 2;
-    this.copperSell = 5;
-    this.ironSell = 8;
-    this.goldSell = 10;
-    this.woodBuy = 5;
-    this.woodQuantity = 5;
-    this.copperQuantity = 5;
-    this.ironQuantity = 5;
-    this.goldQuantity = 0;
-    this.copperBuy = 10;
-    this.ironBuy = 15;
-    this.goldBuy = 20;
+    this.wood = {sell: 2, buy: 5, quantity: 5};
+    this.copperIngot = {sell: 5, buy: 10, quantity: 5};
+    this.ironIngot = {sell: 8, buy: 15, quantity: 5};
+    this.goldIngot = {sell: 10, buy: 20, quantity: 0};
+    this.x = x;
+    this.y = y;
   }
   sell(item, inventoryObj) {
 		if (inventoryObj[item] > 0) {
-    	inventoryObj.currency += this[`${item}Sell`];
+    	inventoryObj.currency += this[item].sell;
       inventoryObj[item] -= 1;
-      this[`${item}Quantity`] += 1;
+      this[item].quantity += 1;
     } else {
     	alert(`Not Enough ${item}`);
     }
   }
   buy(item, inventoryObj) {
-    if (InventoryObj.currency >= this[`${item}Buy`]) {
-      this[`${item}Quantity`] -= 1;
-      inventoryObj.currency -= this[`${item}Buy`];
+    if (inventoryObj.currency >= this[item].buy) {
+      this[item].quantity -= 1;
+      inventoryObj.currency -= this[item].buy;
       inventoryObj[item] += 1;
     } else {
     	alert('Not Enough Money');
@@ -69,118 +33,94 @@ export class Vendor {
   }
 };
 
-////////////////////////////////////////Mining Machine Notes///////////////////////
+////////////////////////////////////////////////////Mining Machine Notes//////////////////////////////////////////////////////
 /*
-  MiningMachine runs on an interval and stores values on each interval tick. 
-  The this.storage value is what the player pulls from during interaction.
-  The interval ticks are self reliant and will stop when the value hits zero.
-
-  to withdrawl the player just passes their object through the argument .withdrawal(inventoryObj)
-  withdrawal adds to the inventory with the argument that was fed on mineNode.
-  to mine, the argument should be called with plain english argument mineNode('iron', 20)
+{
+  MiningMachine object expects x,y value on creation
+  miningMachine.mineNode((GAME WORLD OBJECT HERE))
+  if gameworld object returns false the intervall is stopped and no more code is executed
+  the value of the machine is returned via player interaction with withdrawl (not final);
+}
 */
 
 export class MiningMachine {
-  constructor() {
+  constructor(x,y) {
     this.fuel = 500;
-    this.storage = 0;
-    this.type = null;
-    this.currentMine = null;
+    this.storage = ['', 0];
+    this.miningPower = 1;
+    this.x = x;
+    this.y = y;
   }
   withdrawal(inventoryObj) {
     inventoryObj[this.type] += this.storage;
-    this.storage = 0;
+    this.storage = ['', 0];
   }
-  mineNode(nodeType, nodeQuantity){
-    this.currentMine = nodeQuantity;
-    this.type = nodeType;
+  mineNode(gameworld){
     const interval = setInterval(() => {
-      this.fuel -= 1;
-      this.storage += 1;
-      this.currentMine -= 1;
-      if (this.currentMine === 0) {
+      const returnValue = gameworld.mine( this.x, this.y, miningPower);
+      if (returnValue === false) {
         clearInterval(interval);
+        throw alert('no value')
       }
+      const [type, value] = returnValue;
+      this.storage[0] = type;
+      this.storage[1] += value;
+      this.fuel -= 1;
     }, 10000)
   }
+};
+/////////////////////////////////////////////////////// Smelter Info //////////////////////////////////////////////////////////////
+/*
+{
+
+  Smelter object expects x,y value on creation
+  When interacting with the smelter object it checks the inventory object value of the given argument.
+  if enough items are found the semlter will remove the inventory items from the inventory object and return the "upgraded" item
+  The inventory object should have a value of 0 by default for all items before using this class
+
 }
-
+*/
 export class Smelter {
-  constructor() {
-    this.fuel = 0;
-    this.queue = [];
-    this.woodToCoal = 3;
-    this.copperToIngot = 3;
-    this.ironToIngot = 3;
-    this.goldToIngot = 3;
+  constructor(x,y) {
+    this.x = x;
+    this.y = y;
+    this.fuel = 5;
+    this.conversion = 3;
   }
-
-
-  WoodRefuel(machine) {
-    machine.fuel++;
-  }
-
-  CoalRefuel(machine) {
-    machine.fuel = machine.fuel + 5;
-  }
-
-  SmeltWood(playerInventory) {
-    if (this.fuel > 0) {
-      if (playerInventory.wood >= this.woodtoCoal) {
-        playerInventory.wood = playerInventory.wood - this.woodtoCoal;
-        playerInventory.coal++;
+  smelt(type, inventoryObj) {
+    const objectReturn = {
+      wood: () => 'coal',
+      copper: () => 'copperIngot',
+      iron: () => 'ironIngot',
+      gold: () => 'goldIngot',
+      default: () => false
+    }
+    if (this.fuel > 0 && inventoryObj[type] >= this.conversion) {
+      const isValid = (objectReturn[type] || objectReturn['default'])()
+      if (isValid) {
+        inventoryObj[type] -= this.conversion;
+        inventoryObj[isValid]++
         this.fuel--;
-      } else {
-        alert('Not enough wood.');
       }
-      return (playerInventory);
-    } else {
-      alert('Not enough fuel.');
     }
   }
+};
 
-  SmeltCopper(playerInventory) {
-    if (this.fuel > 0) {
-      if (playerInventory.copper >= this.copperToIngot) {
-        playerInventory.copper = playerInventory.copper - this.copperToIngot;
-        playerInventory.copperIngot++;
-        this.fuel--;
-      } else {
-        alert('Not enough copper.');
-      }
-      return (playerInventory);
-    } else {
-      alert('Not enough fuel.');
-    }
+//////////////////////////////////////////////////////////Refuel Info ///////////////////////////////////////////////////////////
+/*
+{
+
+  Refuel is a simple object made to refuel given objects through  arguments with static classes
+  Do not Create a Refuel object as an instance "new Refuel()"
+  instead use Refuel object as such : Refuel.woodRefuel("current object to refuel here");
+
+}
+*/
+export class Refuel {
+  static woodRefuel(object) {
+    object.fuel++;
   }
-
-  SmeltIron(playerInventory) {
-    if (this.fuel > 0) {
-      if (playerInventory.iron >= this.ironToIngot) {
-        playerInventory.iron = playerInventory.iron - this.ironToIngot;
-        playerInventory.ironIngot++;
-        this.fuel--;
-      } else {
-        alert('Not enough iron.');
-      }
-      return (playerInventory);
-    } else {
-      alert('Not enough fuel.');
-    }
-  }
-
-  SmeltGold(playerInventory) {
-    if (this.fuel > 0) {
-      if (playerInventory.gold >= this.goldToIngot) {
-        playerInventory.gold = playerInventory.gold - this.goldToIngot;
-        playerInventory.goldIngot++;
-        this.fuel--;
-      } else {
-        alert('Not enough gold.');
-      }
-      return playerInventory;
-    } else {
-      alert('Not enough fuel.')
-    }
+  static coalRefuel(object) {
+    object.fuel += 5;
   }
 };

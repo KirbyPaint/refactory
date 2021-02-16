@@ -52,6 +52,16 @@ $(document).ready(function() {
   window.addEventListener("keydown", function(event) {
     let x = character.location_x;
     let y = character.location_y;
+    window.scrollTo();
+
+    // let element = `#${x}_${y}`;
+    // element.scrollTo(0,0);
+    // const scrollLock = document.getElementById(`#${parseInt(x)}_${parseInt(y)}`);
+    // scrollLock.scrollIntoView({
+    //   behavior: "smooth",
+    //   block: "center",
+    //   inline: "center"
+    // });
     if (event.key == "ArrowLeft") {
       $(`#${x}_${y}`).removeClass("character"); // Removes class from prev. square
       character.move(-1, 0, "left");            // Move character object
@@ -120,6 +130,6 @@ $(document).ready(function() {
     const coords = currentID.split("_");
     $("#mouse_x").text(coords[0]);
     $("#mouse_y").text(coords[1]);
-    $("#select").text(gameworld.world[coords[0]][coords[1]].type)
+    $("#select").text(gameworld.world[coords[0]][coords[1]].type);
   });
 });

@@ -138,8 +138,8 @@ $(document).ready(function() {
     let blocktype = gameworld.world[mouse_x, mouse_y].type;
     if (character.validClick(player_x, player_y, mouse_x, mouse_y, blocktype)) {
       //alert("VALID");
-      // gameworld.mine(mouse_x,mouse_y, 1);
-      console.log(gameworld.mine(mouse_x, mouse_y, 1));
+      console.log(gameworld.world[mouse_y][mouse_x]);
+      console.log(gameworld.mine(mouse_y,mouse_x, 1));
     } else {
       //alert("INVALID");
     }

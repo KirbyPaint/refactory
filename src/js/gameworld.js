@@ -59,12 +59,12 @@ export default class GameWorld {
       for (let j=0; j<x; j++) {
         newArray[i][j] = {
           item:{
-            type:false,
             max:100,
             amount:0
           },
           machine:{},
-          type:"grass"
+          type:"grass",
+          amount:0
         };
       }
     }
@@ -95,11 +95,9 @@ export default class GameWorld {
       for (let j=0; j<this.height; j++) {
         
         if (materialAllowed[i][j] > one && materialAvailable[i][j] > two && materialPlaced[i][j] > three) {
-          if (this.world[i][j].type == "grass" && material != "water") {
+          if (this.world[i][j].type == "grass") {
             this.world[i][j].type = material;
-            this.world[i][j].item.type = material;
-            this.world[i][j].item.max = 1000;
-            this.world[i][j].item.amount = this.convertRange(materialPlaced[i][j],0,1,100,1000);
+            this.world[i][j].amount = Math.floor(this.convertRange(materialPlaced[i][j],0,1,100,1000));
           } else if (material == "water") {
             this.world[i][j].type = material; 
           }
@@ -108,12 +106,102 @@ export default class GameWorld {
     }
   }
 
+  generateRiver() {
+
+    //generate random direction up down left right
+    let randomDirection = Math.floor(Math.random() * 4);
+    let direction;
+    switch(randomDirection) {
+    case 0:
+      direction = "up";
+      break;
+    case 1:
+      direction = "right";
+      break;
+    case 2:
+      direction = "left";
+      break;
+    case 3:
+      direction = "down";
+      break;
+    }
+
+    let startx = 0;
+    let starty = 100;
+
+    for (let i=0; i<this.width; i++) {
+      for (let j=0; j<this.height; j++) {
+        if (this.world[j][i].type == "water") {
+          startx = j;
+          starty = i;
+        }
+      }
+    }
+  
+    let width = 2; //Math.floor(this.convertRange(Math.random(),0,1,1,3));
+    const bias = this.convertRange(Math.round(Math.random() * Math.round(width)),0,width,-width/2,width/2);
+
+    let generate = true;
+    let x = startx;
+    let y = starty;
+    let counter = 0;
+    while (generate) {
+
+      counter += 1;
+      if (counter == 10) {
+        counter = 0;
+        let change = Math.floor(this.convertRange(Math.random(),0,1,-3,3));
+
+        if (width+change < 5 && width+change > 1) {
+          width = width+change;
+        }
+      }
+
+      for (let i = y-width; i<y+width && i != 200; i++) {
+        for (let j = x-width; j<x+width && j != 200; j++) {
+          if (i < 200 && i >= 0 && j  < 200 && j >= 0) {
+
+            //if right newi = i and newj = j
+            //if left newi /= i and newj /=j
+            //if down newi = j  and newj = i
+            //if up  newi /= j  and newj /= i
+            let newi;
+            let newj;
+
+            if (direction == "right") {
+              newi = i;
+              newj = j;
+            } else if (direction == "left") {
+              newi = this.convertRange(i,0,this.width-1,this.width-1,0);
+              newj = this.convertRange(j,0,this.width-1,this.width-1,0);
+            } else if (direction == "down") {
+              newi = j;
+              newj = i;
+            } else if (direction == "up") {
+              newi = this.convertRange(j,0,this.width-1,this.width-1,0);
+              newj = this.convertRange(i,0,this.width-1,this.width-1,0);
+            }
+            this.world[newj][newi].type = "water";
+          }
+        }
+      }
+
+      x = x + 1;
+      let ychange = this.convertRange(Math.round(Math.random() * Math.round(width*2)),0,width*2,-width,width);
+      y = Math.round(y + ychange + bias);
+      if (x >= 200) {
+        generate = false;
+      }
+    }
+  }
+
   generateWorld() {
+    // this.generateMaterial("water",0.8,0.7,0.1);
+    // this.generateRiver();
     this.generateMaterial("copper",0.7,0.6,0.6);
     this.generateMaterial("iron",0.7,0.5,0.6);
     this.generateMaterial("gold",0.7,0.4,0.9);
     this.generateMaterial("coal",0.7,0.5,0.6);
-    this.generateMaterial("water",0.8,0.7,0.1);
     this.generateMaterial("tree",0.4,0.6,0.3);
   }
 
@@ -184,25 +272,22 @@ export default class GameWorld {
   }
 
   //tree, ore
-  mine(x,y,amount) {
-    if (["copper","iron","gold","coal"].includes(this.world[y][x].type)) {
-      let removeditem = this.world[y][x].item;
-
-      if (this.world[y][x].item.amount - amount < 0) {
-        this.world[y][x].item.type = false;
+  mine(y,x,amount) {
+    if (this.world[y][x].type != "grass" && this.world[y][x].type != "water") {
+      let removeditem = JSON.parse(JSON.stringify(this.world[y][x]));
+      if (this.world[y][x].amount - amount < 0) {
         this.world[y][x].item.amount = 0;
         this.world[y][x].type = "grass";
-        return [removeditem.item.type,removeditem.item.amount];
+        return [removeditem.type,removeditem.amount];
       
-      } else if (this.world[y][x].item.amount - amount > 0) {
-        this.world[y][x].item.amount =- amount;
-        return [removeditem.item.type,amount];
+      } else if (this.world[y][x].amount - amount > 0) {
+        this.world[y][x].amount = this.world[y][x].amount - amount;
+        return [removeditem.type,amount];
       
-      } else if (this.world[y][x].item.amount - amount == 0) {
-        this.world[y][x].item.type = false;
-        this.world[y][x].item.amount = 0;
+      } else if (this.world[y][x].amount - amount == 0) {
+        this.world[y][x].amount = 0;
         this.world[y][x].type = "grass";
-        return [removeditem.item.type,amount];
+        return [removeditem.type,amount];
       }
     } else {
       return false;

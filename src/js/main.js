@@ -5,6 +5,7 @@ import '../css/styles.css';
 import GameWorld from '../js/gameworld.js';
 import Player from './player.js';
 
+
 $(document).ready(function() {
   for (let i=0; i<200; i++) {
     let divinput = `<div>`;
@@ -20,25 +21,7 @@ $(document).ready(function() {
   gameworld.generateWorld();
   let character = new Player("Wood", "Pickaxe", 100, 100);
 
-  for (let a=0; a<200; a++) {
-    for (let k=0; k<200; k++) {
-      if (gameworld.world[a][k].type == "copper") {
-        $(`#${a}_${k}`).css("background-color", `rgb(184, 115, 51)`);
-      } else if (gameworld.world[a][k].type == "iron") {
-        $(`#${a}_${k}`).css("background-color", `rgb(169, 188, 208)`);
-      } else if (gameworld.world[a][k].type == "gold") {
-        $(`#${a}_${k}`).css("background-color", `rgb(255, 239, 159)`);
-      } else if (gameworld.world[a][k].type == "coal") {
-        $(`#${a}_${k}`).css("background-color", `rgb(10, 10, 10)`);
-      } else if (gameworld.world[a][k].type == "water") {
-        $(`#${a}_${k}`).css("background-color", `rgb(50, 80, 200)`);
-      } else if (gameworld.world[a][k].type == "tree") {
-        $(`#${a}_${k}`).css("background-color", `rgb(100, 150, 50)`);
-      } else {
-        $(`#${a}_${k}`).css("background-color", `rgb(100, 250, 150)`);
-      }
-    }
-  }
+  gameworld.renderChunk();
   
   $("#x").text(character.location_x);
   $("#y").text(character.location_y);
@@ -160,9 +143,12 @@ $(document).ready(function() {
         node = (gameworld.mine(mouse_x,mouse_y, 0)); // Hand cannot mine
         // Node should be like "place machine" or "craft machine"
       }
-      console.log(gameworld.world[mouse_x][mouse_y]);  // Displays the quantity in selected node
-      character.addInventory(node[0], node[1]);
-      console.log(`Node[0] is ${node[0]} and Node[1] is ${node[1]}`);
+      if (node != false) {
+        console.log(gameworld.world[mouse_x][mouse_y]);  // Displays the quantity in selected node
+        character.addInventory(node[0], node[1]);
+        console.log(`Node[0] is ${node[0]} and Node[1] is ${node[1]}`);
+      }
+      gameworld.renderChunk(mouse_x,mouse_y);
       $("#playerCopper").text(character.inventory.copper);
       $("#playerIron").text(character.inventory.iron);
       $("#playerGold").text(character.inventory.gold);

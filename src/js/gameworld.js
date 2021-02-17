@@ -1,3 +1,4 @@
+import $ from 'jquery';
 //interacting with this class:
 
 //Spawning a new world map:
@@ -71,6 +72,44 @@ export default class GameWorld {
     return newArray;
   }
 
+  renderChunk(x="none",y="none") {
+    let startx;
+    let starty;
+    let endx;
+    let endy; 
+    if (x == "none" || y == "none") {
+      startx = 0;
+      starty = 0;
+      endx =   199;
+      endy =   199;
+     } else {
+      startx = x;
+      starty = y;
+      endx =   x;
+      endy =   y;
+     }
+  
+    for (let a=startx; a<=endx || a>200; a++) {
+      for (let k=starty; k<=endy || k>200; k++) {
+          if (this.world[a][k].type == "copper") {
+            $(`#${a}_${k}`).css("background-color", `rgb(184, 115, 51)`);
+          } else if (this.world[a][k].type == "iron") {
+            $(`#${a}_${k}`).css("background-color", `rgb(169, 188, 208)`);
+          } else if (this.world[a][k].type == "gold") {
+            $(`#${a}_${k}`).css("background-color", `rgb(255, 239, 159)`);
+          } else if (this.world[a][k].type == "coal") {
+            $(`#${a}_${k}`).css("background-color", `rgb(10, 10, 10)`);
+          } else if (this.world[a][k].type == "water") {
+            $(`#${a}_${k}`).css("background-color", `rgb(50, 80, 200)`);
+          } else if (this.world[a][k].type == "tree") {
+            $(`#${a}_${k}`).css("background-color", `rgb(100, 150, 50)`);
+          } else {
+            $(`#${a}_${k}`).css("background-color", `rgb(100, 250, 150)`);
+          }
+      }
+    }
+  }
+
   //terrain generators
 
   generateTerrain(sizex,sizey,density) {
@@ -97,7 +136,7 @@ export default class GameWorld {
         if (materialAllowed[i][j] > one && materialAvailable[i][j] > two && materialPlaced[i][j] > three) {
           if (this.world[i][j].type == "grass") {
             this.world[i][j].type = material;
-            this.world[i][j].amount = Math.floor(this.convertRange(materialPlaced[i][j],0,1,100,1000));
+            this.world[i][j].amount = Math.floor(this.convertRange(materialPlaced[i][j],0,1,100,200));
           } else if (material == "water") {
             this.world[i][j].type = material; 
           }

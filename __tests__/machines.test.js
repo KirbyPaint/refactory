@@ -1,4 +1,4 @@
-import { MiningMachine } from '../src/js/machines.js';
+import { MiningMachine, Smelter } from '../src/js/machines.js';
 
 describe("MiningMachine", () => {
   let miningMachine;
@@ -38,5 +38,24 @@ describe("MiningMachine", () => {
     miningMachine.storage = ['copper', 5];
     miningMachine.withdrawal(inventoryObj);
     expect(miningMachine.storage).toEqual(['copper', 0]);
-  })
+  });
 });
+
+describe("Smelter", () => {
+  let smelter;
+  beforeEach(() => {
+    smelter = new Smelter(1,1);
+  });
+  test("It should give the name of the object", () => {
+    expect(smelter.name).toEqual('Smelter')
+  });
+  test("It Should create and object with a x value", () => {
+    expect(smelter.x).toEqual(1);
+  });
+  test("It should create and object with a y value", () => {
+    expect(smelter.y).toEqual(1);
+  });
+  test("It should start with 5 fuel", () => {
+    expect(smelter.fuel).toEqual(5);
+  });
+})

@@ -157,6 +157,7 @@ $(document).ready(function() {
     renderText(character);
   });
 
+  // Right-click
   window.addEventListener("contextmenu", function(event) {
     // on right click place the smelter
     event.preventDefault();
@@ -172,7 +173,7 @@ $(document).ready(function() {
       if (character.toolType === "Hand") {
         const machine = new Smelter(mouse_x, mouse_y);
         gameworld.world[mouse_x][mouse_y].machine = machine;
-        alert("SMELTER");
+        gameworld.renderChunk(mouse_x,mouse_y,"player hand");
       }
     }
   });

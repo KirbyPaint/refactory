@@ -19,10 +19,7 @@ export default class Player {
   }
 
   addInventory(key, amount) {
-    console.log(this.inventory[`${key}`]);
-    console.log(`Key is ${key}, amount to add is ${amount}`);
     this.inventory[`${key}`] += amount;
-    console.log(this.inventory);
     // this.inventory[key].value += amount;
   }
 

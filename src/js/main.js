@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/styles.css';
 import GameWorld from '../js/gameworld.js';
 import Player from './player.js';
+import { MiningMachine } from './machines.js';
 
 function renderText(character) {
   $("#x").text(character.location_x);
@@ -142,14 +143,15 @@ $(document).ready(function() {
         node = (gameworld.mine(mouse_x,mouse_y, 1)); // Axe mines badly
       }
       else if (character.toolType === "Hand") {
-        node = (gameworld.mine(mouse_x,mouse_y, 0)); // Hand cannot mine
-        // Node should be like "place machine" or "craft machine"
+        node = (gameworld.mine(mouse_x,mouse_y, 0));
+        const machine = new MiningMachine(mouse_x, mouse_y);
+        console.log('Machine ', machine);
+        gameworld.addMachine(mouse_x, mouse_y, machine);
+        machine.mineNode(gameworld);
       }
 
       if (node != false) {
-        console.log(gameworld.world[mouse_x][mouse_y]);  // Displays the quantity in selected node
         character.addInventory(node[0], node[1]);
-        console.log(`Node[0] is ${node[0]} and Node[1] is ${node[1]}`);
       }
       gameworld.renderChunk(mouse_x,mouse_y);
       $("#playerCopper").text(character.inventory.copper);
@@ -157,7 +159,6 @@ $(document).ready(function() {
       $("#playerGold").text(character.inventory.gold);
       $("#playerCoal").text(character.inventory.coal);
       $("#playerTree").text(character.inventory.tree);
-      console.log(gameworld.mine(mouse_x,mouse_y, 1)); // This is what we actually get returned from the click
     }
     renderText(character);
   });

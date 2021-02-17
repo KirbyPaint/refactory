@@ -38,7 +38,7 @@ export class Vendor {
       alert('Not Enough Money');
     }
   }
-};
+}
 
 ////////////////////////////////////////////////////Mining Machine Notes//////////////////////////////////////////////////////
 /*
@@ -56,7 +56,7 @@ export class MiningMachine {
   constructor(x, y) {
     this.fuel = 500;
     this.storage = ['', 0];
-    this.miningPower = 1;
+    this.miningPower = 100;
     this.x = x;
     this.y = y;
   }
@@ -67,18 +67,22 @@ export class MiningMachine {
   }
   mineNode(gameworld) {
     const interval = setInterval(() => {
-      const returnValue = gameworld.mine(this.x, this.y, miningPower);
+      const returnValue = gameworld.mine(this.x, this.y, this.miningPower);
+      console.log( 'return value',returnValue);
       if (returnValue === false) {
         clearInterval(interval);
-        throw alert('no value')
+        gameworld.renderChunk(this.x, this.y);
+        alert('no value');
+      } else {
+        const [type, value] = returnValue;
+        this.storage[0] = type;
+        this.storage[1] += value;
+        this.fuel -= 1;
+        console.log(this.storage);
       }
-      const [type, value] = returnValue;
-      this.storage[0] = type;
-      this.storage[1] += value;
-      this.fuel -= 1;
-    }, 10000)
+    }, 500);
   }
-};
+}
 /////////////////////////////////////////////////////// Smelter Info //////////////////////////////////////////////////////////////
 /*
 {
@@ -104,17 +108,17 @@ export class Smelter {
       iron: () => 'ironIngot',
       gold: () => 'goldIngot',
       default: () => false
-    }
+    };
     if (this.fuel > 0 && inventoryObj.inventory[type] >= this.conversion) {
-      const isValid = (objectReturn[type] || objectReturn['default'])()
+      const isValid = (objectReturn[type] || objectReturn['default'])();
       if (isValid) {
         inventoryObj.inventory[type] -= this.conversion;
-        inventoryObj.inventory[isValid]++
+        inventoryObj.inventory[isValid]++;
         this.fuel--;
       }
     }
   }
-};
+}
 
 //////////////////////////////////////////////////////////Refuel Info ///////////////////////////////////////////////////////////
 /*
@@ -140,4 +144,4 @@ export class Refuel {
       fuelObject.fuel + 5;
     }
   }
-};
+}

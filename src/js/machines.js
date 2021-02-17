@@ -1,8 +1,15 @@
-///////////////////////////////////////////////// Vendor Information //////////////////////////////
+///////////////////////////////////////////////////////////// Vendor Information /////////////////////////////////////////
 /*
-  Non atm
+{
+
+  Vendor object expects x,y value on creation
+  Vendor object has a fuel value and properties with a buy, sell, and quantity object.
+  Entering an item and a player inventory object into the sell or buy funtion as an argument will check the players
+  currency and vendor stock if purchasing or the player inventory object if selling. Items will be sold one at time.
+
+}
 */
-///////////////////////////////////////////////////////////// Vendor Info End ////////////////////////////////////////////
+
 export class Vendor {
   constructor(x,y) {
     this.fuel = 0;
@@ -36,10 +43,12 @@ export class Vendor {
 ////////////////////////////////////////////////////Mining Machine Notes//////////////////////////////////////////////////////
 /*
 {
+
   MiningMachine object expects x,y value on creation
   miningMachine.mineNode((GAME WORLD OBJECT HERE))
   if gameworld object returns false the intervall is stopped and no more code is executed
   the value of the machine is returned via player interaction with withdrawl (not final);
+
 }
 */
 
@@ -116,6 +125,7 @@ export class Smelter {
 
 }
 */
+
 export class Refuel {
   static woodRefuel(object) {
     object.fuel++;

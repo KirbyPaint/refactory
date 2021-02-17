@@ -58,7 +58,7 @@ export class MiningMachine {
     this.on = true;
     this.fuel = 500;
     this.storage = ['', 0];
-    this.miningPower = 100;
+    this.miningPower = 1;
     this.x = x;
     this.y = y;
   }
@@ -70,20 +70,18 @@ export class MiningMachine {
   mineNode(gameworld) {
     const interval = setInterval(() => {
       const returnValue = gameworld.mine(this.x, this.y, this.miningPower);
-      console.log( 'return value',returnValue);
       if (returnValue === false) {
         clearInterval(interval);
-        gameworld.renderChunk(this.x, this.y);
         this.on = false;
-        alert('no value');
+        gameworld.renderChunk(this.x, this.y,"Mining Machine");
+        // alert('no value');
       } else {
         const [type, value] = returnValue;
         this.storage[0] = type;
         this.storage[1] += value;
         this.fuel -= 1;
-        console.log(this.storage);
       }
-    }, 500);
+    }, 10000);
   }
 }
 /////////////////////////////////////////////////////// Smelter Info //////////////////////////////////////////////////////////////

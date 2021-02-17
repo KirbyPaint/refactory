@@ -125,7 +125,7 @@ $(document).ready(function() {
     }
   }, true);
 
-  window.addEventListener("click", function() { 
+  window.addEventListener("click", function() {
     const clicked = event.target;
     const currentID = clicked.id || "No ID!";
 
@@ -134,7 +134,7 @@ $(document).ready(function() {
     const player_y = parseInt(character.location_y);
     const mouse_x = parseInt(coords[0]);
     const mouse_y = parseInt(coords[1]);
-    if (character.validClick(player_x, player_y, mouse_x, mouse_y,)) {
+    if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
       let node;
       if (character.toolType === "Pickaxe") {
         node = (gameworld.mine(mouse_x,mouse_y, 3)); // Pickaxe mines well
@@ -145,15 +145,14 @@ $(document).ready(function() {
       else if (character.toolType === "Hand") {
         node = (gameworld.mine(mouse_x,mouse_y, 0));
         const machine = new MiningMachine(mouse_x, mouse_y);
-        console.log('Machine ', machine);
-        gameworld.addMachine(mouse_x, mouse_y, machine);
+        gameworld.world[mouse_x][mouse_y].machine = machine;
         machine.mineNode(gameworld);
       }
 
       if (node != false) {
         character.addInventory(node[0], node[1]);
       }
-      gameworld.renderChunk(mouse_x,mouse_y);
+      gameworld.renderChunk(mouse_x,mouse_y,"player hand");
       $("#playerCopper").text(character.inventory.copper);
       $("#playerIron").text(character.inventory.iron);
       $("#playerGold").text(character.inventory.gold);

@@ -137,7 +137,7 @@ export class Refuel {
   static coalRefuel(fuelObject, inventoryObj) {
     if (inventoryObj.inventory.coal > 0) {
       inventoryObj.inventory.coal -= 1;
-      fuelObject.fuel + 3;
+      fuelObject.fuel + 5;
     }
   }
 };

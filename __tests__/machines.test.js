@@ -29,10 +29,14 @@ describe("MiningMachine", () => {
   test("It should start with an on value of true", () => {
     expect(miningMachine.on).toEqual(true);
   });
-  test("It should withdrawl storage from the object when the method .widthdrawl is called", () => {
+  test("It should withdrawl storage from the object when the method .widthdrawal is called", () => {
     miningMachine.storage = ['copper', 5];
     miningMachine.withdrawal(inventoryObj);
     expect(inventoryObj.inventory.copper).toEqual(5);
   });
-  
+  test("It should empty the remaining value of the storage array when a withdrawal happens", () => {
+    miningMachine.storage = ['copper', 5];
+    miningMachine.withdrawal(inventoryObj);
+    expect(miningMachine.storage).toEqual(['copper', 0]);
+  })
 });

@@ -61,8 +61,9 @@ export class MiningMachine {
     this.y = y;
   }
   withdrawal(inventoryObj) {
-    inventoryObj[this.type] += this.storage;
-    this.storage = ['', 0];
+    const [type, value] = this.storage;
+    inventoryObj[type] += value;
+    this.storage = [type, 0];
   }
   mineNode(gameworld){
     const interval = setInterval(() => {

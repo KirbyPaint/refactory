@@ -12,6 +12,7 @@
 
 export class Vendor {
   constructor(x, y) {
+    this.name = "Vendor";
     this.fuel = 0;
     this.tree = { sell: 2, buy: 5, quantity: 5 };
     this.copperIngot = { sell: 5, buy: 10, quantity: 5 };
@@ -97,6 +98,7 @@ export class MiningMachine {
 */
 export class Smelter {
   constructor(x, y) {
+    this.name = "Smelter";
     this.x = x;
     this.y = y;
     this.fuel = 5;

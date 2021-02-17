@@ -95,7 +95,23 @@ export default class Player {
   // Displays tool material and type as string
   // Only use for displays, not functionality.
   checkTool() {
-    return this.toolMaterial + " " + this.toolType;
+    if (this.toolType === "Hand") {
+      return this.toolType;
+    } else {
+      return this.toolMaterial + " " + this.toolType;
+    }
+  }
+
+  cycleTool(currentTool) {
+    if (currentTool === "Pickaxe") {
+      this.toolType = "Axe";
+    }
+    else if (currentTool === "Axe") {
+      this.toolType = "Hand";
+    }
+    else if (currentTool === "Hand") {
+      this.toolType = "Pickaxe";
+    }
   }
 
   // What functions might a character have/need?

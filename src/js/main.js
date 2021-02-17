@@ -47,9 +47,9 @@ $(document).ready(function() {
   $("#tool").text(character.checkTool());
   $("#credits").text(character.credits);
 
-  $("#playerCopper").text(character.inventory.copper_ore);
-  $("#playerIron").text(character.inventory.iron_ore);
-  $("#playerGold").text(character.inventory.gold_ore);
+  $("#playerCopper").text(character.inventory.copper);
+  $("#playerIron").text(character.inventory.iron);
+  $("#playerGold").text(character.inventory.gold);
   $("#playerCoal").text(character.inventory.coal);
   $("#playerTree").text(character.inventory.tree);
 
@@ -131,6 +131,12 @@ $(document).ready(function() {
       $("#spawnWidth").text(charCenterWidth);
       $("#spawnHeight").text(charCenterHeight);
     }
+    else if (event.key == "0") {
+      let currentTool = character.toolType;
+      character.cycleTool(currentTool);
+      currentTool = character.checkTool();
+      $("#tool").text(currentTool);
+    }
   }, true);
 
   window.addEventListener("click", function() { 
@@ -143,7 +149,17 @@ $(document).ready(function() {
     let mouse_y = parseInt(coords[1]);
     let blocktype = gameworld.world[mouse_x, mouse_y].type;
     if (character.validClick(player_x, player_y, mouse_x, mouse_y, blocktype)) {
-      let node = (gameworld.mine(mouse_y,mouse_x, 1));
+      let node;
+      if (character.toolType === "Pickaxe") {
+        node = (gameworld.mine(mouse_y,mouse_x, 3)); // Pickaxe mines well
+      }
+      else if (character.toolType === "Axe") {
+        node = (gameworld.mine(mouse_y,mouse_x, 1)); // Axe mines badly
+      }
+      else if (character.toolType === "Hand") {
+        node = (gameworld.mine(mouse_y,mouse_x, 0)); // Hand cannot mine
+        // Node should be like "place machine" or "craft machine"
+      }
       console.log(gameworld.world[mouse_y][mouse_x]);  // Displays the quantity in selected node
       character.addInventory(node[0], node[1]);
       console.log(`Node[0] is ${node[0]} and Node[1] is ${node[1]}`);

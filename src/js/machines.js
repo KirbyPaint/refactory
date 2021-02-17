@@ -54,6 +54,8 @@ export class Vendor {
 
 export class MiningMachine {
   constructor(x, y) {
+    this.name = 'MiningMachine';
+    this.on = true;
     this.fuel = 500;
     this.storage = ['', 0];
     this.miningPower = 100;
@@ -72,6 +74,7 @@ export class MiningMachine {
       if (returnValue === false) {
         clearInterval(interval);
         gameworld.renderChunk(this.x, this.y);
+        this.on = false;
         alert('no value');
       } else {
         const [type, value] = returnValue;

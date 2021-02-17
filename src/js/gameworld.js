@@ -14,6 +14,10 @@ import water4 from '../assets/gametextures/WaterTile4.png';
 import mineOn from '../assets/gametextures/MiningMachineLight.png';
 import mineOff from '../assets/gametextures/MiningMachine.png';
 
+import refineOn from '../assets/gametextures/RefineryLight.png';
+import refineOff from '../assets/gametextures/Refinery.png';
+
+
 import copper from '../assets/gametextures/CopperNode.png';
 import iron from '../assets/gametextures/IronNode.png';
 import coal from '../assets/gametextures/CoalNode.png';
@@ -140,6 +144,12 @@ export default class GameWorld {
             machineTexture = `url(${mineOn}),`;
           } else {
             machineTexture = `url(${mineOff}),`;
+          }
+        } else if (this.world[a][k].machine.name === "") {
+          if (this.world[a][k].machine.on) {
+            machineTexture = `url(${refineOn}),`;
+          } else {
+            machineTexture = `url(${refineOff}),`;
           }
         }
 
@@ -321,12 +331,11 @@ export default class GameWorld {
   }
 
   addMachine(x,y,machine) {
-    if (this.world[y][x].type != "water" && this.world[y][x].type != "grass") {
-      this.world[y][x].machine = machine;
-      
+    if (this.world[y][x].machine == {}) {
+      this.world[y][x]["machine"] = machine;
+
       console.log(this.world[x][y].machine);
 
-      return [machine,1];
     } else {
       return false;
     }

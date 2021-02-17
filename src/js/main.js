@@ -63,17 +63,17 @@ $(document).ready(function() {
 
   let charCenterWidth = parseInt(centerWidth);
   let charCenterHeight = parseInt(centerHeight);
-  $(`#100_100`).addClass("character");
+  gameworld.renderPlayer(100,100);
   renderText(character);
   window.addEventListener("keydown", function(event) {
     let player_x = character.location_x;
     let player_y = character.location_y;
 
     if (event.key == "ArrowLeft") {
-      $(`#${player_x}_${player_y}`).removeClass("character"); // Removes class from prev. square
+      gameworld.derenderPlayer(player_x,player_y);// Removes class from prev. square
       character.move(-1, 0, "left");            // Move character object
       player_x = character.location_x;                 // Update current character's horiz. coord.
-      $(`#${player_x}_${player_y}`).addClass("character");    // Adds class to current square
+      gameworld.renderPlayer(player_x,player_y);
       charCenterWidth -= 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#x").text(character.location_x);       // Updates HUD text
@@ -82,10 +82,10 @@ $(document).ready(function() {
       $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowUp") {
-      $(`#${player_x}_${player_y}`).removeClass("character");
+      gameworld.derenderPlayer(player_x,player_y);
       character.move(0, -1, "up");
       player_y = character.location_y;
-      $(`#${player_x}_${player_y}`).addClass("character");
+      gameworld.renderPlayer(player_x,player_y);
       charCenterHeight -= 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#y").text(character.location_y);
@@ -94,10 +94,10 @@ $(document).ready(function() {
       $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowRight") {
-      $(`#${player_x}_${player_y}`).removeClass("character");
+      gameworld.derenderPlayer(player_x,player_y);
       character.move(1, 0, "right");
       player_x = character.location_x;
-      $(`#${player_x}_${player_y}`).addClass("character");
+      gameworld.renderPlayer(player_x,player_y);
       charCenterWidth += 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#x").text(character.location_x);
@@ -106,10 +106,10 @@ $(document).ready(function() {
       $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowDown") {
-      $(`#${player_x}_${player_y}`).removeClass("character");
+      gameworld.derenderPlayer(player_x,player_y);
       character.move(0, 1, "down");
       player_y = character.location_y;
-      $(`#${player_x}_${player_y}`).addClass("character");
+      gameworld.renderPlayer(player_x,player_y);
       charCenterHeight += 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#y").text(character.location_y);

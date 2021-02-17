@@ -20,6 +20,8 @@ import coal from '../assets/gametextures/CoalNode.png';
 import gold from '../assets/gametextures/GoldNode.png';
 import tree from '../assets/gametextures/Tree.png';
 
+import player from '../assets/gametextures/Player.png';
+
 //interacting with this class:
 
 //Spawning a new world map:
@@ -94,9 +96,22 @@ export default class GameWorld {
     return newArray;
   }
 
+  renderPlayer(x,y) {
+    let style = $(`#${x}_${y}`).css("background-image");
+    let newstyle = `url(${player}),` + style;
+    $(`#${x}_${y}`).css("background-image",newstyle);
+  }
+
+  derenderPlayer(x,y) {
+    let style = $(`#${x}_${y}`).css("background-image");
+    let newstyle = style.replace(`url("http://localhost:8080/assets/gametextures/Player.png"),`,"");
+    $(`#${x}_${y}`).css("background-image",newstyle);
+  }
+
+
   renderChunk(x="none",y="none",incoming="none") {
     if (incoming != "none") {
-      console.log(`${incoming}`, performance.now());
+      // console.log(`${incoming}`, performance.now());
     }
     let startx;
     let starty;
@@ -149,8 +164,6 @@ export default class GameWorld {
         } else if (this.world[a][k].type == "water") {
           let waterUrl = [water1,water2,water3,water4][3];
           groundtexture = `url(${waterUrl})`;
-          $(`#${a}_${k}`).css("background-image", `url(${waterUrl})`);
-
         } else if (this.world[a][k].type == "tree") {
           let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
           groundtexture = `url(${tree}),url(${groundURL})`;

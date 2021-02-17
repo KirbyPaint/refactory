@@ -1,4 +1,11 @@
 import $ from 'jquery';
+import grass1 from '../assets/gametextures/GroundTile1.png';
+import grass2 from '../assets/gametextures/GroundTile2.png';
+import grass3 from '../assets/gametextures/GroundTile3.png';
+import grass4 from '../assets/gametextures/GroundTile4.png';
+import grass5 from '../assets/gametextures/GroundTile5.png';
+import grass6 from '../assets/gametextures/GroundTile6.png';
+
 //interacting with this class:
 
 //Spawning a new world map:
@@ -65,7 +72,8 @@ export default class GameWorld {
           },
           machine:{},
           type:"grass",
-          amount:0
+          amount:0,
+          tile: Math.round(Math.random()*5)
         };
       }
     }
@@ -80,32 +88,33 @@ export default class GameWorld {
     if (x == "none" || y == "none") {
       startx = 0;
       starty = 0;
-      endx =   199;
-      endy =   199;
-     } else {
+      endx = 199;
+      endy = 199;
+    } else {
       startx = x;
       starty = y;
       endx =   x;
       endy =   y;
-     }
+    }
   
     for (let a=startx; a<=endx || a>200; a++) {
       for (let k=starty; k<=endy || k>200; k++) {
-          if (this.world[a][k].type == "copper") {
-            $(`#${a}_${k}`).css("background-color", `rgb(184, 115, 51)`);
-          } else if (this.world[a][k].type == "iron") {
-            $(`#${a}_${k}`).css("background-color", `rgb(169, 188, 208)`);
-          } else if (this.world[a][k].type == "gold") {
-            $(`#${a}_${k}`).css("background-color", `rgb(255, 239, 159)`);
-          } else if (this.world[a][k].type == "coal") {
-            $(`#${a}_${k}`).css("background-color", `rgb(10, 10, 10)`);
-          } else if (this.world[a][k].type == "water") {
-            $(`#${a}_${k}`).css("background-color", `rgb(50, 80, 200)`);
-          } else if (this.world[a][k].type == "tree") {
-            $(`#${a}_${k}`).css("background-color", `rgb(100, 150, 50)`);
-          } else {
-            $(`#${a}_${k}`).css("background-color", `rgb(100, 250, 150)`);
-          }
+        if (this.world[a][k].type == "copper") {
+          $(`#${a}_${k}`).css("background-color", `rgb(184, 115, 51)`);
+        } else if (this.world[a][k].type == "iron") {
+          $(`#${a}_${k}`).css("background-color", `rgb(169, 188, 208)`);
+        } else if (this.world[a][k].type == "gold") {
+          $(`#${a}_${k}`).css("background-color", `rgb(255, 239, 159)`);
+        } else if (this.world[a][k].type == "coal") {
+          $(`#${a}_${k}`).css("background-color", `rgb(10, 10, 10)`);
+        } else if (this.world[a][k].type == "water") {
+          $(`#${a}_${k}`).css("background-color", `rgb(50, 80, 200)`);
+        } else if (this.world[a][k].type == "tree") {
+          $(`#${a}_${k}`).css("background-color", `rgb(100, 150, 50)`);
+        } else {
+          let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
+          $(`#${a}_${k}`).css("background-image", `url(${groundURL})`);
+        }
       }
     }
   }

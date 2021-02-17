@@ -61,6 +61,20 @@ export default class Player {
     }
   }
 
+  validClick(player_x, player_y, mouse_x, mouse_y, blocktype) {
+    let dist_x = Math.abs(player_x - mouse_x);
+    let dist_y = Math.abs(player_y - mouse_y);
+    if (blocktype != "water") {
+      if ((dist_x < 8) && (dist_y < 8)) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+  }
+
   // Displays tool material and type as string
   // Only use for displays, not functionality.
   checkTool() {

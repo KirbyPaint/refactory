@@ -145,7 +145,7 @@ export default class GameWorld {
           } else {
             machineTexture = `url(${mineOff}),`;
           }
-        } else if (this.world[a][k].machine.name === "") {
+        } else if (this.world[a][k].machine.name === "Smelter") {
           if (this.world[a][k].machine.on) {
             machineTexture = `url(${refineOn}),`;
           } else {

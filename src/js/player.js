@@ -1,12 +1,29 @@
 // This class is FAR from complete
 export default class Player {
   constructor(material, type, x, y) {
-    this.inventory;
+    this.inventory = {
+      "copper_ingot": 0,
+      "copper": 0,
+      "iron_ingot": 0,
+      "iron": 0,
+      "gold_ingot": 0,
+      "gold": 0,
+      "coal": 0,
+      "tree": 0
+    };
     this.toolMaterial = material;
     this.toolType = type;
     this.credits = 0;
     this.location_x = x;
     this.location_y = y;
+  }
+
+  addInventory(key, amount) {
+    console.log(this.inventory[`${key}`]);
+    console.log(`Key is ${key}, amount to add is ${amount}`);
+    this.inventory[`${key}`] += amount;
+    console.log(this.inventory);
+    // this.inventory[key].value += amount;
   }
 
   // Displays the location as a string "x, y"
@@ -78,7 +95,23 @@ export default class Player {
   // Displays tool material and type as string
   // Only use for displays, not functionality.
   checkTool() {
-    return this.toolMaterial + " " + this.toolType;
+    if (this.toolType === "Hand") {
+      return this.toolType;
+    } else {
+      return this.toolMaterial + " " + this.toolType;
+    }
+  }
+
+  cycleTool(currentTool) {
+    if (currentTool === "Pickaxe") {
+      this.toolType = "Axe";
+    }
+    else if (currentTool === "Axe") {
+      this.toolType = "Hand";
+    }
+    else if (currentTool === "Hand") {
+      this.toolType = "Pickaxe";
+    }
   }
 
   // What functions might a character have/need?

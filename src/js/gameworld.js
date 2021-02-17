@@ -11,8 +11,8 @@ import water2 from '../assets/gametextures/WaterTile2.png';
 import water3 from '../assets/gametextures/WaterTile3.png';
 import water4 from '../assets/gametextures/WaterTile4.png';
 
-import mineOn from '../assets/gametextures/CopperMiningLight.png';
-import mineOff from '../assets/gametextures/CopperMining.png';
+import mineOn from '../assets/gametextures/MiningMachineLight.png';
+import mineOff from '../assets/gametextures/MiningMachine.png';
 
 import copper from '../assets/gametextures/CopperNode.png';
 import iron from '../assets/gametextures/IronNode.png';

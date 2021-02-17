@@ -158,11 +158,8 @@ $(document).ready(function() {
       $("#playerCoal").text(character.inventory.coal);
       $("#playerTree").text(character.inventory.tree);
       console.log(gameworld.mine(mouse_x,mouse_y, 1)); // This is what we actually get returned from the click
-    } else {
-      //alert("INVALID");
-      character.addInventory(node[0], node[1]); // Get renderer
-      renderText(character);
     }
+    renderText(character);
   });
 
   window.addEventListener("mousemove", function(event) { // Get ID of div

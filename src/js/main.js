@@ -47,6 +47,12 @@ $(document).ready(function() {
   $("#tool").text(character.checkTool());
   $("#credits").text(character.credits);
 
+  $("#playerCopper").text(character.inventory.copper_ore);
+  $("#playerIron").text(character.inventory.iron_ore);
+  $("#playerGold").text(character.inventory.gold_ore);
+  $("#playerCoal").text(character.inventory.coal);
+  $("#playerTree").text(character.inventory.tree);
+
   // Function to simulate character movement on grid
   // Listens for the arrow keys to be pressed, and when pressed
 
@@ -137,9 +143,16 @@ $(document).ready(function() {
     let mouse_y = parseInt(coords[1]);
     let blocktype = gameworld.world[mouse_x, mouse_y].type;
     if (character.validClick(player_x, player_y, mouse_x, mouse_y, blocktype)) {
-      //alert("VALID");
-      console.log(gameworld.world[mouse_y][mouse_x]);
-      console.log(gameworld.mine(mouse_y,mouse_x, 1));
+      let node = (gameworld.mine(mouse_y,mouse_x, 1));
+      console.log(gameworld.world[mouse_y][mouse_x]);  // Displays the quantity in selected node
+      character.addInventory(node[0], node[1]);
+      console.log(`Node[0] is ${node[0]} and Node[1] is ${node[1]}`);
+      $("#playerCopper").text(character.inventory.copper);
+      $("#playerIron").text(character.inventory.iron);
+      $("#playerGold").text(character.inventory.gold);
+      $("#playerCoal").text(character.inventory.coal);
+      $("#playerTree").text(character.inventory.tree);
+      console.log(gameworld.mine(mouse_y,mouse_x, 1)); // This is what we actually get returned from the click
     } else {
       //alert("INVALID");
     }

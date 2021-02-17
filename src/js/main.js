@@ -146,15 +146,15 @@ $(document).ready(function() {
   });
 
   window.addEventListener("mousemove", function(event) { // Get ID of div
-    // If you mouse over any div, this will display the name of the div
-    // If this doesn't happen to be a div with an underscore,
-    // the entire div ID will display in the "Mouse X" space in the HUD
-    const clicked = event.target;
-    const currentID = clicked.id || "No ID!";
-
-    const coords = currentID.split("_");
-    $("#mouse_x").text(coords[0]);
-    $("#mouse_y").text(coords[1]);
-    $("#select").text(gameworld.world[coords[0]][coords[1]].type);
+    
+    const hover = event.target;
+    const currentID = hover.id || "No ID!";
+    const checkCoords = currentID.includes("_"); // Check if the mouseover div is a coordinate pair
+    if (checkCoords) {                           // Only creates x, y coords if it's a pair
+      const coords = currentID.split("_");
+      $("#mouse_x").text(coords[0]);
+      $("#mouse_y").text(coords[1]);
+      $("#select").text(gameworld.world[coords[0]][coords[1]].type);
+    }
   });
 });

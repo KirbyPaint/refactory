@@ -11,31 +11,34 @@
 <body>
   <!-- Heads-Up-Display for UI -->
   <div id="hud">
-    <p>X: [<span id="x"></span>]
-    Y: [<span id="y"></span>]</p>
-
-    <p>Mouse X: [<span id="mouse_x"></span>]
-    Mouse Y: [<span id="mouse_y"></span>]</p>
-
-    <p>Inventory:</p>
-    <ul>
-      <li>Copper:[<span id="playerCopper"></span>]</li>
-      <li>Iron:[<span id="playerIron"></span>]</li>
-      <li>Gold:[<span id="playerGold"></span>]</li>
-      <li>Coal:[<span id="playerCoal"></span>]</li>
-      <li>Wood:[<span id="playerTree"></span>]</li>
-    </ul>
-    <p>Tool: <span id="tool"></span></p>
-    <p>Credits: <span id="credits"></span></p>
-    <p>XP (or level?): <span id="xp"></span></p>
-
-    <p>Player is selecting: <span id="select"></span></p>
-    <p>Player Direction: <span id="output"></span></p>
-    <p>DEBUG STUFF</p>
-    <p>Window Width [<span id="windowWidth"></span>] Height [<span id="windowHeight"></span>]</p>
-    <p>Map Width [<span id="mapWidth"></span>] Height [<span id="mapHeight"></span>]</p>
-    <p>Character Window Spawn at: [<span id="spawnWidth"></span>] Height [<span id="spawnHeight"></span>]</p>
+    <div class="container">
+      <div class="row">
+        <div class="col-2">
+          <p>X: [<span id="x"></span>]
+          Y: [<span id="y"></span>]</p>
+          <p>Mouse X: [<span id="mouse_x"></span>]</p>
+          <p>Mouse Y: [<span id="mouse_y"></span>]</p>
+        </div>
+        <div class="col-2">
+            <p>Copper:[<span id="playerCopper"></span>]</p>
+            <p>Iron:[<span id="playerIron"></span>]</p>
+            <p>Gold:[<span id="playerGold"></span>]</p>
+        </div>
+        <div class="col-2">
+          <p>Coal:[<span id="playerCoal"></span>]</p>
+          <p>Wood:[<span id="playerTree"></span>]</p>
+        </div>
+        <div class="col-3">
+          <p>Tool: <span id="tool"></span></p>
+          <p>Credits: <span id="credits"></span></p>
+          <p>XP (or level?): <span id="xp"></span></p>
+        </div>
+        <div class="col-3">
+          <p>Player is selecting: <span id="select"></span></p>
+          <p>Player Direction: <span id="output"></span></p>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
-
 </html>

@@ -12,7 +12,7 @@ body>div {
 #hud {
   font-size: 15px;
   font-family: 'Courier New', Courier, monospace;
-  line-height: 1px;
+  /* line-height: 1px; */
   background-color: white;
   padding: 10px;
   position: fixed;

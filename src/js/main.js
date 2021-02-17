@@ -62,23 +62,20 @@ $(document).ready(function() {
   $("#mapWidth").text(pageWidth);
   $("#mapHeight").text(pageHeight);
 
-  window.scrollTo(centerWidth, centerHeight);
+  // window.scrollTo(centerWidth, centerHeight);
+
+  window.scrollTo({
+    top: centerWidth,
+    left: centerHeight,
+    behavior: "smooth"
+  });
 
   let charCenterWidth = centerWidth;
   let charCenterHeight = centerHeight;
+  $(`#100_100`).addClass("character");
   window.addEventListener("keydown", function(event) {
     let x = character.location_x;
     let y = character.location_y;
-    
-
-
-
-    // Theory: divide the 10,000 page size by current coordinate (for both directions)
-    // Then subtract 1/2 the window width/height as applies to re-center the screen on player
-    // maybe 
-
-    // let mathWidth = (charWidth - windowWidth);
-    // let mathHeight = (charHeight - windowHeight);
 
     if (event.key == "ArrowLeft") {
       $(`#${x}_${y}`).removeClass("character"); // Removes class from prev. square
@@ -130,28 +127,22 @@ $(document).ready(function() {
     }
   }, true);
 
-  window.addEventListener("click", function() { // Basic shop functionality
-    // Not how the shop will function in the end, but this was just to demo onclick functionality
-    if ((character.checkCredits() >= 50) && (character.toolMaterial != "Gold")) {
-      // The popup right now will literally trigger any time if the credits are over 50.
-      // Again this is for demo purposes, but this whole function should probably be disabled when not demo-ing.
-      let purchase = confirm("Would you like to upgrade your tool for 50 credits?");
-      if (purchase) {
-        if (character.toolMaterial === "Wood") {
-          alert(character.toolMaterial);
-          character.newToolMaterial("Iron");
-        }
-        else if (character.toolMaterial === "Iron") {
-          alert(character.toolMaterial);
-          character.newToolMaterial("Gold");
-        }
-        character.gainCredits(-50);
-        $("#tool").text(character.checkTool());
-        $("#credits").text(character.credits);
-      }
+  window.addEventListener("click", function() { 
+    const clicked = event.target;
+    const currentID = clicked.id || "No ID!";
+    const coords = currentID.split("_");
+    let player_x = parseInt(character.location_x);
+    let player_y = parseInt(character.location_y);
+    let mouse_x = parseInt(coords[0]);
+    let mouse_y = parseInt(coords[1]);
+    let blocktype = gameworld.world[mouse_x, mouse_y].type;
+    if (character.validClick(player_x, player_y, mouse_x, mouse_y, blocktype)) {
+      //alert("VALID");
+      // gameworld.mine(mouse_x,mouse_y, 1);
+      console.log(gameworld.mine(mouse_x, mouse_y, 1));
+    } else {
+      //alert("INVALID");
     }
-    character.gainCredits(1);
-    $("#credits").text(character.credits);
   });
 
   window.addEventListener("mousemove", function(event) { // Get ID of div

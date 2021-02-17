@@ -2,14 +2,14 @@
 export default class Player {
   constructor(material, type, x, y) {
     this.inventory = {
-      "copper_ingot": 0,
-      "copper": 0,
-      "iron_ingot": 0,
-      "iron": 0,
-      "gold_ingot": 0,
-      "gold": 0,
-      "coal": 0,
-      "tree": 0
+      copperIngot: 0,
+      copper: 0,
+      ironIngot: 0,
+      iron: 0,
+      goldIngot: 0,
+      gold: 0,
+      coal: 0,
+      tree: 0
     };
     this.toolMaterial = material;
     this.toolType = type;
@@ -78,15 +78,11 @@ export default class Player {
     }
   }
 
-  validClick(player_x, player_y, mouse_x, mouse_y, blocktype) {
+  validClick(player_x, player_y, mouse_x, mouse_y) {
     let dist_x = Math.abs(player_x - mouse_x);
     let dist_y = Math.abs(player_y - mouse_y);
-    if (blocktype != "water") {
-      if ((dist_x < 8) && (dist_y < 8)) {
-        return true;
-      } else {
-        return false;
-      }
+    if ((dist_x < 8) && (dist_y < 8)) {
+      return true;
     } else {
       return false;
     }

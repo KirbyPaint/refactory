@@ -1,17 +1,21 @@
-# _TEMPLATE_
+# ReFactory
 
-#### _Website to TEMPLATE_
+#### _Teamweek project at Epicodus_
 
-#### By _**Ash Porter (KirbyPaint)**_
+## Creators
+[CrankyJones](https://github.com/CrankyJones) - [dcouch440](https://github.com/dcouch440) - [louiesch](https://github.com/louiesch) - [JJohan-work](https://github.com/JJohan-work) - [KirbyPaint](https://github.com/KirbyPaint) - [levi-kohler](https://github.com/levi-kohler)
 
 ## Description
 
-The purpose of this TEMPLATE
+This project is a factory game clone. The player can traverse a world rich with ores, mining materials to build machines and refine the ores into valuables.
+
+## Controls
+
+Move the character with the arrow keys. Click on a square to mine the square. Uze the number 0 key to cycle between equipped tools.
 
 ## Specs
 
 ## Setup/Installation Requirements
-
 #### This page has been tested with both the most recent versions of Mozilla Firefox and Google Chrome
 
 * Open Git or your preferred terminal
@@ -30,8 +34,6 @@ The purpose of this TEMPLATE
 > npm run start
 
 * The project will then open in your default web browser
-
-(This project was developed on Windows. These steps may not work on a non-Windows machine.)
 
 ## Known Bugs
 

@@ -2,14 +2,14 @@
 export default class Player {
   constructor(material, type, x, y) {
     this.inventory = {
-      "copper_ingot": 0,
-      "copper": 0,
-      "iron_ingot": 0,
-      "iron": 0,
-      "gold_ingot": 0,
-      "gold": 0,
-      "coal": 0,
-      "tree": 0
+      copperIngot: 0,
+      copper: 0,
+      ironIngot: 0,
+      iron: 0,
+      goldIngot: 0,
+      gold: 0,
+      coal: 0,
+      tree: 0
     };
     this.toolMaterial = material;
     this.toolType = type;

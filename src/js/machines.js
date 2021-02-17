@@ -5,37 +5,37 @@
   Vendor object expects x,y value on creation
   Vendor object has a fuel value and properties with a buy, sell, and quantity object.
   Entering an item and a player inventory object into the sell or buy funtion as an argument will check the players
-  currency and vendor stock if purchasing or the player inventory object if selling. Items will be sold one at time.
+  credits and vendor stock if purchasing or the player inventory object if selling. Items will be sold one at time.
 
 }
 */
 
 export class Vendor {
-  constructor(x,y) {
+  constructor(x, y) {
     this.fuel = 0;
-    this.wood = {sell: 2, buy: 5, quantity: 5};
-    this.copperIngot = {sell: 5, buy: 10, quantity: 5};
-    this.ironIngot = {sell: 8, buy: 15, quantity: 5};
-    this.goldIngot = {sell: 10, buy: 20, quantity: 0};
+    this.tree = { sell: 2, buy: 5, quantity: 5 };
+    this.copperIngot = { sell: 5, buy: 10, quantity: 5 };
+    this.ironIngot = { sell: 8, buy: 15, quantity: 5 };
+    this.goldIngot = { sell: 10, buy: 20, quantity: 0 };
     this.x = x;
     this.y = y;
   }
   sell(item, inventoryObj) {
-		if (inventoryObj[item] > 0) {
-    	inventoryObj.currency += this[item].sell;
-      inventoryObj[item] -= 1;
+    if (inventoryObj.inventory[item] > 0) {
+      inventoryObj.credits += this[item].sell;
+      inventoryObj.inventory[item] -= 1;
       this[item].quantity += 1;
     } else {
-    	alert(`Not Enough ${item}`);
+      alert(`Not Enough ${item}`);
     }
   }
   buy(item, inventoryObj) {
-    if (inventoryObj.currency >= this[item].buy) {
+    if (inventoryObj.credits >= this[item].buy) {
       this[item].quantity -= 1;
-      inventoryObj.currency -= this[item].buy;
-      inventoryObj[item] += 1;
+      inventoryObj.credits -= this[item].buy;
+      inventoryObj.inventory[item] += 1;
     } else {
-    	alert('Not Enough Money');
+      alert('Not Enough Money');
     }
   }
 };
@@ -53,7 +53,7 @@ export class Vendor {
 */
 
 export class MiningMachine {
-  constructor(x,y) {
+  constructor(x, y) {
     this.fuel = 500;
     this.storage = ['', 0];
     this.miningPower = 1;
@@ -62,12 +62,12 @@ export class MiningMachine {
   }
   withdrawal(inventoryObj) {
     const [type, value] = this.storage;
-    inventoryObj[type] += value;
+    inventoryObj.inventory[type] += value;
     this.storage = [type, 0];
   }
-  mineNode(gameworld){
+  mineNode(gameworld) {
     const interval = setInterval(() => {
-      const returnValue = gameworld.mine( this.x, this.y, miningPower);
+      const returnValue = gameworld.mine(this.x, this.y, miningPower);
       if (returnValue === false) {
         clearInterval(interval);
         throw alert('no value')
@@ -91,7 +91,7 @@ export class MiningMachine {
 }
 */
 export class Smelter {
-  constructor(x,y) {
+  constructor(x, y) {
     this.x = x;
     this.y = y;
     this.fuel = 5;
@@ -99,17 +99,17 @@ export class Smelter {
   }
   smelt(type, inventoryObj) {
     const objectReturn = {
-      wood: () => 'coal',
+      tree: () => 'coal',
       copper: () => 'copperIngot',
       iron: () => 'ironIngot',
       gold: () => 'goldIngot',
       default: () => false
     }
-    if (this.fuel > 0 && inventoryObj[type] >= this.conversion) {
+    if (this.fuel > 0 && inventoryObj.inventory[type] >= this.conversion) {
       const isValid = (objectReturn[type] || objectReturn['default'])()
       if (isValid) {
-        inventoryObj[type] -= this.conversion;
-        inventoryObj[isValid]++
+        inventoryObj.inventory[type] -= this.conversion;
+        inventoryObj.inventory[isValid]++
         this.fuel--;
       }
     }
@@ -122,16 +122,22 @@ export class Smelter {
 
   Refuel is a simple object made to refuel given objects through  arguments with static classes
   Do not Create a Refuel object as an instance "new Refuel()"
-  instead use Refuel object as such : Refuel.woodRefuel("current object to refuel here");
+  instead use Refuel object as such : Refuel.treeRefuel("current object to refuel here", "inventory object here");
 
 }
 */
 
 export class Refuel {
-  static woodRefuel(object) {
-    object.fuel++;
+  static treeRefuel(fuelObject, inventoryObj) {
+    if (inventoryObj.inventory.tree > 0) {
+      inventoryObj.inventory.tree -= 1;
+      fuelObject.fuel++;
+    }
   }
-  static coalRefuel(object) {
-    object.fuel += 5;
+  static coalRefuel(fuelObject, inventoryObj) {
+    if (inventoryObj.inventory.coal > 0) {
+      inventoryObj.inventory.coal -= 1;
+      fuelObject.fuel + 3;
+    }
   }
 };

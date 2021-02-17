@@ -6,6 +6,20 @@ import grass4 from '../assets/gametextures/GroundTile4.png';
 import grass5 from '../assets/gametextures/GroundTile5.png';
 import grass6 from '../assets/gametextures/GroundTile6.png';
 
+import water1 from '../assets/gametextures/WaterTile1.png';
+import water2 from '../assets/gametextures/WaterTile2.png';
+import water3 from '../assets/gametextures/WaterTile3.png';
+import water4 from '../assets/gametextures/WaterTile4.png';
+
+import mineOn from '../assets/gametextures/CopperMiningLight.png';
+import mineOff from '../assets/gametextures/CopperMining.png';
+
+import copper from '../assets/gametextures/CopperNode.png';
+import iron from '../assets/gametextures/IronNode.png';
+import coal from '../assets/gametextures/IronNode.png';
+import gold from '../assets/gametextures/GoldNode.png';
+import tree from '../assets/gametextures/Tree.png';
+
 //interacting with this class:
 
 //Spawning a new world map:
@@ -80,7 +94,10 @@ export default class GameWorld {
     return newArray;
   }
 
-  renderChunk(x="none",y="none") {
+  renderChunk(x="none",y="none",incoming="none") {
+    if (incoming != "none") {
+      console.log(`${incoming}`, performance.now());
+    }
     let startx;
     let starty;
     let endx;
@@ -99,22 +116,52 @@ export default class GameWorld {
   
     for (let a=startx; a<=endx || a>200; a++) {
       for (let k=starty; k<=endy || k>200; k++) {
+
+        let machineTexture = "";
+        
+        
+        if (this.world[a][k].machine.name === "MiningMachine") {
+          if (this.world[a][k].machine.on) {
+            machineTexture = `url(${mineOn}),`;
+          } else {
+            machineTexture = `url(${mineOff}),`;
+          }
+        }
+
+        let groundtexture;
+
         if (this.world[a][k].type == "copper") {
-          $(`#${a}_${k}`).css("background-color", `rgb(184, 115, 51)`);
+          let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
+          groundtexture = `url(${copper}),url(${groundURL})`;
+
         } else if (this.world[a][k].type == "iron") {
-          $(`#${a}_${k}`).css("background-color", `rgb(169, 188, 208)`);
+          let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
+          groundtexture = `url(${iron}),url(${groundURL})`;
+
         } else if (this.world[a][k].type == "gold") {
-          $(`#${a}_${k}`).css("background-color", `rgb(255, 239, 159)`);
+          let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
+          groundtexture = `url(${gold}),url(${groundURL})`;
+
         } else if (this.world[a][k].type == "coal") {
-          $(`#${a}_${k}`).css("background-color", `rgb(10, 10, 10)`);
+          let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
+          groundtexture = `url(${coal}),url(${groundURL})`;
+
         } else if (this.world[a][k].type == "water") {
-          $(`#${a}_${k}`).css("background-color", `rgb(50, 80, 200)`);
+          let waterUrl = [water1,water2,water3,water4][3];
+          groundtexture = `url(${waterUrl})`;
+          $(`#${a}_${k}`).css("background-image", `url(${waterUrl})`);
+
         } else if (this.world[a][k].type == "tree") {
-          $(`#${a}_${k}`).css("background-color", `rgb(100, 150, 50)`);
+          let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
+          groundtexture = `url(${tree}),url(${groundURL})`;
         } else {
           let groundURL = [grass1,grass2,grass3,grass4,grass5,grass6][this.world[a][k].tile];
-          $(`#${a}_${k}`).css("background-image", `url(${groundURL})`);
+          groundtexture = `url(${groundURL})`;
         }
+
+        $(`#${a}_${k}`).css("background-image", `${machineTexture}${groundtexture}`);
+
+
       }
     }
   }
@@ -244,8 +291,8 @@ export default class GameWorld {
   }
 
   generateWorld() {
-    // this.generateMaterial("water",0.8,0.7,0.1);
-    // this.generateRiver();
+    this.generateMaterial("water",0.8,0.7,0.1);
+    this.generateRiver();
     this.generateMaterial("copper",0.7,0.6,0.6);
     this.generateMaterial("iron",0.7,0.5,0.6);
     this.generateMaterial("gold",0.7,0.4,0.9);
@@ -261,8 +308,11 @@ export default class GameWorld {
   }
 
   addMachine(x,y,machine) {
-    if (this.world[y][x].type != "water" && this.world[y][x].type != "tree" && this.world[y][x].machine == "none") {
+    if (this.world[y][x].type != "water" && this.world[y][x].type != "grass") {
       this.world[y][x].machine = machine;
+      
+      console.log(this.world[x][y].machine);
+
       return [machine,1];
     } else {
       return false;
@@ -272,7 +322,7 @@ export default class GameWorld {
   removeMachine(x,y) {
     if (this.world[y][x].machine != "none") {
       let removedMachine = this.world[y][x].machine;
-      this.world[y][x].machine = "none";
+      this.world[y][x].machine = {};
       return [removedMachine,1];
     } else {
       return false;

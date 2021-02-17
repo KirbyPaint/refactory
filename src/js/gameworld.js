@@ -16,7 +16,7 @@ import mineOff from '../assets/gametextures/MiningMachine.png';
 
 import copper from '../assets/gametextures/CopperNode.png';
 import iron from '../assets/gametextures/IronNode.png';
-import coal from '../assets/gametextures/IronNode.png';
+import coal from '../assets/gametextures/CoalNode.png';
 import gold from '../assets/gametextures/GoldNode.png';
 import tree from '../assets/gametextures/Tree.png';
 

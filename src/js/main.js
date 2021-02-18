@@ -4,7 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/styles.css';
 import GameWorld from '../js/gameworld.js';
 import Player from './player.js';
-import { MiningMachine, Smelter } from './machines.js';
+import { MiningMachine } from './machines.js';
+// import { Smelter } from './machines.js';
 
 function renderText(character) {
   $("#x").text(character.location_x);
@@ -144,18 +145,27 @@ $(document).ready(function () {
         node = (gameworld.mine(mouse_x, mouse_y, 1)); // Axe mines badly
       }
       else if (character.toolType === "Hand") {
-        if (character.checkInventory("tree") >= 50) {
-          const machine = new MiningMachine(mouse_x, mouse_y);
-          node = (gameworld.mine(mouse_x, mouse_y, 0));
-          gameworld.world[mouse_x][mouse_y].machine = machine;
-          machine.mineNode(gameworld);
-          character.inventory.tree -= 50;
-        } else {
-          alert("need more trees to create mining machine");
+        if (gameworld.addMachine(mouse_x, mouse_y, "MiningMachine") === "occupied") {
+          alert("There is already a machine here:");
+          let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+          thisMachine.withdrawal(character);
+        }
+        else {
+          if (character.checkInventory("tree") >= 50) {
+            const machine = new MiningMachine(mouse_x, mouse_y);
+            node = (gameworld.mine(mouse_x, mouse_y, 0));
+            gameworld.world[mouse_x][mouse_y].machine = machine;
+            machine.mineNode(gameworld);
+            character.inventory.tree -= 50;
+          } else {
+            alert("need more trees to create mining machine");
+          }
         }
       }
       if (node != false) {
-        character.addInventory(node[0], node[1]);
+        if (typeof (node) !== 'undefined') {
+          character.addInventory(node[0], node[1]);
+        }
       }
       gameworld.renderChunk(mouse_x, mouse_y, "player hand");
     }
@@ -163,31 +173,31 @@ $(document).ready(function () {
   });
 
   // Right-click
-  window.addEventListener("contextmenu", function (event) {
-    // on right click place the smelter
-    event.preventDefault();
-    const clicked = event.target;
-    const currentID = clicked.id || "No ID!";
+  // window.addEventListener("contextmenu", function (event) {
+  //   // on right click place the smelter
+  //   event.preventDefault();
+  //   const clicked = event.target;
+  //   const currentID = clicked.id || "No ID!";
 
-    const coords = currentID.split("_");
-    const player_x = parseInt(character.location_x);
-    const player_y = parseInt(character.location_y);
-    const mouse_x = parseInt(coords[0]);
-    const mouse_y = parseInt(coords[1]);
-    if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
-      if (character.toolType === "Hand") {
-        if (character.checkInventory("coal") >= 50) {
-          const machine = new Smelter(mouse_x, mouse_y);
-          gameworld.world[mouse_x][mouse_y].machine = machine;
-          gameworld.renderChunk(mouse_x, mouse_y, "player hand");
-          character.inventory.coal -= 50;
-        } else {
-          alert("need more coal to make smelter machine");
-        }
-      }
-    }
-    renderText(character);
-  });
+  //   const coords = currentID.split("_");
+  //   const player_x = parseInt(character.location_x);
+  //   const player_y = parseInt(character.location_y);
+  //   const mouse_x = parseInt(coords[0]);
+  //   const mouse_y = parseInt(coords[1]);
+  //   if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
+  //     if (character.toolType === "Hand") {
+  //       if (character.checkInventory("coal") >= 50) {
+  //         const machine = new Smelter(mouse_x, mouse_y);
+  //         gameworld.world[mouse_x][mouse_y].machine = machine;
+  //         gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+  //         character.inventory.coal -= 50;
+  //       } else {
+  //         alert("need more coal to make smelter machine");
+  //       }
+  //     }
+  //   }
+  //   renderText(character);
+  // });
 
   window.addEventListener("mousemove", function (event) { // Get ID of div
     const hover = event.target;
@@ -197,6 +207,12 @@ $(document).ready(function () {
       const coords = currentID.split("_");
       const mouse_x = parseInt(coords[0]);
       const mouse_y = parseInt(coords[1]);
+      let currentMachineStorage;
+      if (typeof (gameworld.world[mouse_x][mouse_y].machine) !== 'undefined') {
+        currentMachineStorage = gameworld.world[mouse_x][mouse_y].machine.storage;
+        $("#resource").text(currentMachineStorage[0]);
+        $("#quantity").text(currentMachineStorage[1]);
+      }
       $("#mouse_x").text(mouse_x);
       $("#mouse_y").text(mouse_y);
       $("#select").text(gameworld.world[mouse_x][mouse_y].type);

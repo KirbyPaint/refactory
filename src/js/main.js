@@ -37,6 +37,13 @@ $(document).ready(function () {
 
   gameworld.renderChunk();
 
+  $("#tools>button").on("click", function() {
+    console.log(this);
+    character.changeTool(this.getAttribute("id"));
+    let currentTool = character.checkTool();
+    $("#tool").text(currentTool);
+  });
+
   $("#x").text(character.location_x);
   $("#y").text(character.location_y);
   $("#mouse_x").text(character.location_x);
@@ -143,16 +150,21 @@ $(document).ready(function () {
       }
       else if (character.toolType === "Axe") {
         node = (gameworld.mine(mouse_x, mouse_y, 1)); // Axe mines badly
-      }
-      else if (character.toolType === "Hand") {
-        let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("tree"), "MiningMachine");
-        if (placementResponse === "occupied") {
-          let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+      } else if (character.toolType === "Hand") {
+
+        let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+        if (thisMachine != undefined) {
           thisMachine.withdrawal(character);
           if (thisMachine.on == false) {
             gameworld.removeMachine(mouse_y, mouse_x); // YES THESE DO NEED TO BE y, x
             gameworld.renderChunk(mouse_x, mouse_y, "player hand");
           }
+        }
+
+      } else if (character.toolType === "Miner") {
+        let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("tree"), "MiningMachine");
+        if (placementResponse === "occupied") {
+
           // alert("There is already a machine here:");
         } else if (placementResponse === "success") {
           const machine = new MiningMachine(mouse_x, mouse_y);
@@ -165,6 +177,26 @@ $(document).ready(function () {
         } else if (placementResponse === "not enough") {
           alert("need more trees to create mining machine");
         }
+      } else if (character.toolType === "Smelter") {
+        if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
+          if (character.checkInventory("coal") >= 50) {
+            let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
+            if (placementResponse === "occupied") {
+              // let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+              // thisMachine.withdrawal(character);
+            } else if (placementResponse === "success") {
+              const machine = new Smelter(mouse_x, mouse_y);
+              gameworld.world[mouse_x][mouse_y].machine = machine;
+              character.inventory.coal -= 50;
+            } else if (placementResponse === "not enough") {
+              alert("need more coal to create smelting machine");
+            }
+          } else {
+            alert("need more coal to create smelting machine");
+          }
+          gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+          renderText(character);
+        }
       }
       if (node != false) {
         if (typeof (node) !== 'undefined') {
@@ -176,39 +208,39 @@ $(document).ready(function () {
     renderText(character);
   });
 
-  window.addEventListener("contextmenu", function (event) {
-    // on right click place the smelter
-    event.preventDefault();
-    const clicked = event.target;
-    const currentID = clicked.id || "No ID!";
+  // window.addEventListener("contextmenu", function (event) {
+  //   // on right click place the smelter
+  //   event.preventDefault();
+  //   const clicked = event.target;
+  //   const currentID = clicked.id || "No ID!";
 
-    const coords = currentID.split("_");
-    const player_x = parseInt(character.location_x);
-    const player_y = parseInt(character.location_y);
-    const mouse_x = parseInt(coords[0]);
-    const mouse_y = parseInt(coords[1]);
-    if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
-      if (character.toolType === "Hand") {
-        if (character.checkInventory("coal") >= 50) {
-          let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
-          if (placementResponse === "occupied") {
-            let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
-            thisMachine.withdrawal(character);
-          } else if (placementResponse === "success") {
-            const machine = new Smelter(mouse_x, mouse_y);
-            gameworld.world[mouse_x][mouse_y].machine = machine;
-            character.inventory.coal -= 50;
-          } else if (placementResponse === "not enough") {
-            alert("need more coal to create smelting machine");
-          }
-        } else {
-          alert("need more coal to create smelting machine");
-        }
-      }
-      gameworld.renderChunk(mouse_x, mouse_y, "player hand");
-      renderText(character);
-    }
-  });
+  //   const coords = currentID.split("_");
+  //   const player_x = parseInt(character.location_x);
+  //   const player_y = parseInt(character.location_y);
+  //   const mouse_x = parseInt(coords[0]);
+  //   const mouse_y = parseInt(coords[1]);
+    // if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
+    //   if (character.toolType === "Hand") {
+    //     if (character.checkInventory("coal") >= 50) {
+    //       let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
+    //       if (placementResponse === "occupied") {
+    //         let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+    //         thisMachine.withdrawal(character);
+    //       } else if (placementResponse === "success") {
+    //         const machine = new Smelter(mouse_x, mouse_y);
+    //         gameworld.world[mouse_x][mouse_y].machine = machine;
+    //         character.inventory.coal -= 50;
+    //       } else if (placementResponse === "not enough") {
+    //         alert("need more coal to create smelting machine");
+    //       }
+    //     } else {
+    //       alert("need more coal to create smelting machine");
+    //     }
+    //   }
+    //   gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+    //   renderText(character);
+    // }
+  // });
 
   window.addEventListener("mousemove", function (event) { // Get ID of div
     const hover = event.target;

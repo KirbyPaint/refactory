@@ -39,6 +39,12 @@ body>div>div:hover {
   border: 1px solid red !important;
 }
 
+#tools {
+  position: fixed;
+  z-index: 1;
+  bottom:10%;
+}
+
 /* body>div:hover {
   background-color: orange;
 } */

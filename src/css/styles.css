@@ -13,6 +13,7 @@ body, html {
 #gameworld {
   display: flex;
   flex-wrap: nowrap;
+  margin:200px;
 }
 
 #gameworld>div {
@@ -25,15 +26,30 @@ body, html {
   font-size: 15px;
   font-family: 'Courier New', Courier, monospace;
   line-height: 1px;
-  background-color: white;
-  padding: 10px;
   position: fixed;
-  width: 100%;
+  width: fit-content;
   height: 10%;
   bottom: 0px;
   left: 0px;
-  border: 5px solid red;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
 }
+
+#hud>div {
+  border:2px solid black;
+  border-radius: 10px;
+  width:fit-content;
+  background-color: white;
+  padding:10px;
+  font-size: 2em;
+}
+#hud>div>* {
+  margin-top: 10px;
+  text-align: center;
+}
+
+
 
 .p {
   text-align: left;
@@ -45,13 +61,14 @@ body, html {
   position: fixed;
   text-align: center;
   background-color: white;
-  padding: 15px;
   border-style: solid;
   border-color: red;
-  margin-left: 20%;
-  margin-top: 10%;
   width: 60%;
   height: 60%;
+  top:50%;
+  left:50%;
+  font-size: 100%;
+  transform: translate(-50%,-50%);
 }
 
 /* Character placement class */

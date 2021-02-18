@@ -26,11 +26,28 @@ function renderText(character) {
   $("#playerGoldIngots").text(character.inventory.goldIngot);
   $("#playerCoal").text(character.inventory.coal);
   $("#playerTree").text(character.inventory.tree);
+  renderInventory(character);
 }
 
 // function lastKnown() {
 //   return [character.last_x, character.last_y];
 // }
+
+
+function renderInventory(player) {
+  let cycle = Object.keys(player.inventory)
+  let inventory = "";
+  cycle.forEach(key => {
+    if (player.inventory[key] != 0) {
+      inventory = inventory + 
+      `<div id="inventorySlot">
+        <p id="Iamount">${player.inventory[key]}</p>
+        <p id="Iname">${key}</p>
+      </div>`
+    }
+  })
+  $("#hud").html(inventory);
+}
 
 $(document).ready(function () {
   for (let i = 0; i < 200; i++) {

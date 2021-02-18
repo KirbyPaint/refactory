@@ -29,7 +29,7 @@
 }
 
 #splash {
-  font-size: large;
+  font-size: 35px;
   z-index: 99999;
   position: fixed;
   text-align: center;

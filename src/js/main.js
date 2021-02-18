@@ -4,8 +4,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/styles.css';
 import GameWorld from '../js/gameworld.js';
 import Player from './player.js';
-import { MiningMachine } from './machines.js';
-// import { Smelter } from './machines.js';
+import { MiningMachine, Smelter } from './machines.js';
+// import { MiningMachine } from './machines.js';
 
 function renderText(character) {
   $("#x").text(character.location_x);
@@ -145,16 +145,25 @@ $(document).ready(function () {
         node = (gameworld.mine(mouse_x, mouse_y, 1)); // Axe mines badly
       }
       else if (character.toolType === "Hand") {
-        let placementResponse = gameworld.addMachine(mouse_x, mouse_y,50,character.checkInventory("tree"),"MiningMachine");
+        let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("tree"), "MiningMachine");
         if (placementResponse === "occupied") {
-          alert("There is already a machine here:");
           let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+          console.log(`this machine on ${thisMachine.on}`);
           thisMachine.withdrawal(character);
+          if (thisMachine.on == false) {
+            console.log("CHECK I");
+            gameworld.removeMachine(mouse_y, mouse_x); // YES THESE DO NEED TO BE y, x
+            gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+          }
+          // alert("There is already a machine here:");
         } else if (placementResponse === "success") {
           const machine = new MiningMachine(mouse_x, mouse_y);
           gameworld.world[mouse_x][mouse_y].machine = machine;
           machine.mineNode(gameworld);
           character.inventory.tree -= 50;
+          let currentMachineStorage = gameworld.world[mouse_x][mouse_y].machine.storage;
+          $("#resource").text(currentMachineStorage[0]);
+          $("#quantity").text(currentMachineStorage[1]);
         } else if (placementResponse === "not enough") {
           alert("need more trees to create mining machine");
         }
@@ -169,32 +178,59 @@ $(document).ready(function () {
     renderText(character);
   });
 
-  // Right-click
-  // window.addEventListener("contextmenu", function (event) {
-  //   // on right click place the smelter
-  //   event.preventDefault();
-  //   const clicked = event.target;
-  //   const currentID = clicked.id || "No ID!";
+  window.addEventListener("contextmenu", function (event) {
+    // on right click place the smelter
+    event.preventDefault();
+    const clicked = event.target;
+    const currentID = clicked.id || "No ID!";
 
-  //   const coords = currentID.split("_");
-  //   const player_x = parseInt(character.location_x);
-  //   const player_y = parseInt(character.location_y);
-  //   const mouse_x = parseInt(coords[0]);
-  //   const mouse_y = parseInt(coords[1]);
-  //   if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
-  //     if (character.toolType === "Hand") {
-  //       if (character.checkInventory("coal") >= 50) {
-  //         const machine = new Smelter(mouse_x, mouse_y);
-  //         gameworld.world[mouse_x][mouse_y].machine = machine;
-  //         gameworld.renderChunk(mouse_x, mouse_y, "player hand");
-  //         character.inventory.coal -= 50;
-  //       } else {
-  //         alert("need more coal to make smelter machine");
-  //       }
-  //     }
-  //   }
-  //   renderText(character);
-  // });
+    const coords = currentID.split("_");
+    const player_x = parseInt(character.location_x);
+    const player_y = parseInt(character.location_y);
+    const mouse_x = parseInt(coords[0]);
+    const mouse_y = parseInt(coords[1]);
+    console.log("CHECK A");
+    if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
+      console.log("CHECK B");
+      if (character.toolType === "Hand") {
+        console.log("CHECK C");
+        if (character.checkInventory("coal") >= 50) {
+          console.log("CHECK D");
+          let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
+          if (placementResponse === "occupied") {
+            console.log("CHECK E");
+            // alert("There is already a machine here:");
+            let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+            thisMachine.withdrawal(character);
+          } else if (placementResponse === "success") {
+            console.log("CHECK F");
+            const machine = new Smelter(mouse_x, mouse_y);
+            gameworld.world[mouse_x][mouse_y].machine = machine;
+            // machine.mineNode(gameworld);
+            // Miner idles until filled
+            character.inventory.coal -= 50;
+            // let currentMachineStorage = gameworld.world[mouse_x][mouse_y].machine;
+            // console.log(currentMachineStorage);
+            // $("#resource").text(currentMachineStorage[0]);
+            // $("#quantity").text(currentMachineStorage[1]);
+
+            // const machine = new Smelter(mouse_x, mouse_y);
+            // gameworld.world[mouse_x][mouse_y].machine = machine;
+            // gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+            // character.inventory.coal -= 50;
+          } else if (placementResponse === "not enough") {
+            console.log("CHECK G");
+            alert("need more coal to create smelting machine");
+          }
+        } else {
+          console.log("CHECK H");
+          alert("need more coal to create smelting machine");
+        }
+      }
+      gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+      renderText(character);
+    }
+  });
 
   window.addEventListener("mousemove", function (event) { // Get ID of div
     const hover = event.target;
@@ -207,8 +243,10 @@ $(document).ready(function () {
       let currentMachineStorage;
       if (typeof (gameworld.world[mouse_x][mouse_y].machine) !== 'undefined') {
         currentMachineStorage = gameworld.world[mouse_x][mouse_y].machine.storage;
-        $("#resource").text(currentMachineStorage[0]);
-        $("#quantity").text(currentMachineStorage[1]);
+        if (typeof (currentMachineStorage) !== 'undefined') {
+          $("#resource").text(currentMachineStorage[0]);
+          $("#quantity").text(currentMachineStorage[1]);
+        }
       }
       $("#mouse_x").text(mouse_x);
       $("#mouse_y").text(mouse_y);

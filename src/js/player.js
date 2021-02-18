@@ -121,8 +121,8 @@ export default class Player {
     this.toolType = type;
   }
 
-  checkInventory() {
-    return this.inventory;
+  checkInventory(type) {
+    return this.inventory[type];
   }
 
   checkCredits() {

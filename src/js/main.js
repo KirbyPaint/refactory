@@ -20,22 +20,22 @@ function renderText(character) {
   $("#playerTree").text(character.inventory.tree);
 }
 
-$(document).ready(function() {
-  for (let i=0; i<200; i++) {
+$(document).ready(function () {
+  for (let i = 0; i < 200; i++) {
     let divinput = `<div>`;
-    for (let j=0; j<200; j++) {
+    for (let j = 0; j < 200; j++) {
       divinput += `<div id="${i}_${j}"></div>`;
     }
     divinput += `</div>`;
     $("body").append(divinput);
   }
-  
+
   let gameworld = new GameWorld();
   gameworld.generateWorld();
   let character = new Player("Wood", "Pickaxe", 100, 100);
 
   gameworld.renderChunk();
-  
+
   $("#x").text(character.location_x);
   $("#y").text(character.location_y);
   $("#mouse_x").text(character.location_x);
@@ -63,17 +63,18 @@ $(document).ready(function() {
 
   let charCenterWidth = parseInt(centerWidth);
   let charCenterHeight = parseInt(centerHeight);
-  gameworld.renderPlayer(100,100);
+  gameworld.renderPlayer(100, 100);
   renderText(character);
-  window.addEventListener("keydown", function(event) {
+
+  window.addEventListener("keydown", function (event) {
     let player_x = character.location_x;
     let player_y = character.location_y;
 
     if (event.key == "ArrowLeft") {
-      gameworld.derenderPlayer(player_x,player_y);// Removes class from prev. square
+      gameworld.derenderPlayer(player_x, player_y);// Removes class from prev. square
       character.move(-1, 0, "left");            // Move character object
       player_x = character.location_x;                 // Update current character's horiz. coord.
-      gameworld.renderPlayer(player_x,player_y);
+      gameworld.renderPlayer(player_x, player_y);
       charCenterWidth -= 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#x").text(character.location_x);       // Updates HUD text
@@ -82,10 +83,10 @@ $(document).ready(function() {
       $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowUp") {
-      gameworld.derenderPlayer(player_x,player_y);
+      gameworld.derenderPlayer(player_x, player_y);
       character.move(0, -1, "up");
       player_y = character.location_y;
-      gameworld.renderPlayer(player_x,player_y);
+      gameworld.renderPlayer(player_x, player_y);
       charCenterHeight -= 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#y").text(character.location_y);
@@ -94,10 +95,10 @@ $(document).ready(function() {
       $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowRight") {
-      gameworld.derenderPlayer(player_x,player_y);
+      gameworld.derenderPlayer(player_x, player_y);
       character.move(1, 0, "right");
       player_x = character.location_x;
-      gameworld.renderPlayer(player_x,player_y);
+      gameworld.renderPlayer(player_x, player_y);
       charCenterWidth += 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#x").text(character.location_x);
@@ -106,10 +107,10 @@ $(document).ready(function() {
       $("#spawnHeight").text(charCenterHeight);
     }
     else if (event.key == "ArrowDown") {
-      gameworld.derenderPlayer(player_x,player_y);
+      gameworld.derenderPlayer(player_x, player_y);
       character.move(0, 1, "down");
       player_y = character.location_y;
-      gameworld.renderPlayer(player_x,player_y);
+      gameworld.renderPlayer(player_x, player_y);
       charCenterHeight += 50;
       window.scrollTo(charCenterWidth, charCenterHeight);
       $("#y").text(character.location_y);
@@ -125,7 +126,7 @@ $(document).ready(function() {
     }
   }, true);
 
-  window.addEventListener("click", function() {
+  window.addEventListener("click", function () {
     const clicked = event.target;
     const currentID = clicked.id || "No ID!";
 
@@ -137,28 +138,32 @@ $(document).ready(function() {
     if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
       let node;
       if (character.toolType === "Pickaxe") {
-        node = (gameworld.mine(mouse_x,mouse_y, 3)); // Pickaxe mines well
+        node = (gameworld.mine(mouse_x, mouse_y, 3)); // Pickaxe mines well
       }
       else if (character.toolType === "Axe") {
-        node = (gameworld.mine(mouse_x,mouse_y, 1)); // Axe mines badly
+        node = (gameworld.mine(mouse_x, mouse_y, 1)); // Axe mines badly
       }
       else if (character.toolType === "Hand") {
-        const machine = new MiningMachine(mouse_x, mouse_y);
-        node = (gameworld.mine(mouse_x,mouse_y, 0));
-        gameworld.addMachine(mouse_x,mouse_y,machine);
-        machine.mineNode(gameworld);
+        if (character.checkInventory("tree") >= 50) {
+          const machine = new MiningMachine(mouse_x, mouse_y);
+          node = (gameworld.mine(mouse_x, mouse_y, 0));
+          gameworld.world[mouse_x][mouse_y].machine = machine;
+          machine.mineNode(gameworld);
+          character.inventory.tree -= 50;
+        } else {
+          alert("need more trees to create mining machine");
+        }
       }
-
       if (node != false) {
         character.addInventory(node[0], node[1]);
       }
-      gameworld.renderChunk(mouse_x,mouse_y,"player hand");
+      gameworld.renderChunk(mouse_x, mouse_y, "player hand");
     }
     renderText(character);
   });
 
   // Right-click
-  window.addEventListener("contextmenu", function(event) {
+  window.addEventListener("contextmenu", function (event) {
     // on right click place the smelter
     event.preventDefault();
     const clicked = event.target;
@@ -171,14 +176,20 @@ $(document).ready(function() {
     const mouse_y = parseInt(coords[1]);
     if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
       if (character.toolType === "Hand") {
-        const machine = new Smelter(mouse_x, mouse_y);
-        gameworld.addMachine(mouse_x,mouse_y,machine);
-        gameworld.renderChunk(mouse_x,mouse_y,"player hand");
+        if (character.checkInventory("coal") >= 50) {
+          const machine = new Smelter(mouse_x, mouse_y);
+          gameworld.world[mouse_x][mouse_y].machine = machine;
+          gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+          character.inventory.coal -= 50;
+        } else {
+          alert("need more coal to make smelter machine");
+        }
       }
     }
+    renderText(character);
   });
 
-  window.addEventListener("mousemove", function(event) { // Get ID of div
+  window.addEventListener("mousemove", function (event) { // Get ID of div
     const hover = event.target;
     const currentID = hover.id || "No ID!";
     const checkCoords = currentID.includes("_"); // Check if the mouseover div is a coordinate pair

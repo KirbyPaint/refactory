@@ -7,6 +7,10 @@ import Player from './player.js';
 import { MiningMachine, Smelter } from './machines.js';
 // import { MiningMachine } from './machines.js';
 
+$("#hideSplash").click(function(){
+  $("#splash").hide();
+});
+
 function renderText(character) {
   $("#x").text(character.location_x);
   $("#y").text(character.location_y);
@@ -21,6 +25,10 @@ function renderText(character) {
   $("#playerTree").text(character.inventory.tree);
 }
 
+// function lastKnown() {
+//   return [character.last_x, character.last_y];
+// }
+
 $(document).ready(function () {
   for (let i = 0; i < 200; i++) {
     let divinput = `<div>`;
@@ -28,7 +36,7 @@ $(document).ready(function () {
       divinput += `<div id="${i}_${j}"></div>`;
     }
     divinput += `</div>`;
-    $("body").append(divinput);
+    $("#gameworld").append(divinput);
   }
 
   let gameworld = new GameWorld();
@@ -134,6 +142,18 @@ $(document).ready(function () {
     }
   }, true);
 
+  document.getElementById("smelter-container").addEventListener("click", (event) => {
+    const {id} = event.target;
+    let smelter = gameworld.world[character.last_x][character.last_y].machine;
+    let inv = character;
+    interactiveWindow(id, smelter, inv);
+    console.log(inv);
+  });
+
+  const interactiveWindow = (id, s, invObj) => {
+    s.smelt(id, invObj);
+  };
+
   window.addEventListener("click", function () {
     const clicked = event.target;
     const currentID = clicked.id || "No ID!";
@@ -153,12 +173,19 @@ $(document).ready(function () {
       } else if (character.toolType === "Hand") {
 
         let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
-        if (thisMachine != undefined) {
+        if (thisMachine != undefined && thisMachine.name !== "Smelter") {
           thisMachine.withdrawal(character);
           if (thisMachine.on == false) {
             gameworld.removeMachine(mouse_y, mouse_x); // YES THESE DO NEED TO BE y, x
             gameworld.renderChunk(mouse_x, mouse_y, "player hand");
           }
+        } else if (thisMachine.name === "Smelter") {
+          // Code for the smelter click event
+          $("#smelter-container").show();
+          console.log("display UI");
+          character.last_x = mouse_x;
+          character.last_y = mouse_y;
+          // Code for the smelter click event
         }
 
       } else if (character.toolType === "Miner") {
@@ -219,27 +246,27 @@ $(document).ready(function () {
   //   const player_y = parseInt(character.location_y);
   //   const mouse_x = parseInt(coords[0]);
   //   const mouse_y = parseInt(coords[1]);
-    // if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
-    //   if (character.toolType === "Hand") {
-    //     if (character.checkInventory("coal") >= 50) {
-    //       let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
-    //       if (placementResponse === "occupied") {
-    //         let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
-    //         thisMachine.withdrawal(character);
-    //       } else if (placementResponse === "success") {
-    //         const machine = new Smelter(mouse_x, mouse_y);
-    //         gameworld.world[mouse_x][mouse_y].machine = machine;
-    //         character.inventory.coal -= 50;
-    //       } else if (placementResponse === "not enough") {
-    //         alert("need more coal to create smelting machine");
-    //       }
-    //     } else {
-    //       alert("need more coal to create smelting machine");
-    //     }
-    //   }
-    //   gameworld.renderChunk(mouse_x, mouse_y, "player hand");
-    //   renderText(character);
-    // }
+  // if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
+  //   if (character.toolType === "Hand") {
+  //     if (character.checkInventory("coal") >= 50) {
+  //       let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
+  //       if (placementResponse === "occupied") {
+  //         let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+  //         thisMachine.withdrawal(character);
+  //       } else if (placementResponse === "success") {
+  //         const machine = new Smelter(mouse_x, mouse_y);
+  //         gameworld.world[mouse_x][mouse_y].machine = machine;
+  //         character.inventory.coal -= 50;
+  //       } else if (placementResponse === "not enough") {
+  //         alert("need more coal to create smelting machine");
+  //       }
+  //     } else {
+  //       alert("need more coal to create smelting machine");
+  //     }
+  //   }
+  //   gameworld.renderChunk(mouse_x, mouse_y, "player hand");
+  //   renderText(character);
+  // }
   // });
 
   window.addEventListener("mousemove", function (event) { // Get ID of div

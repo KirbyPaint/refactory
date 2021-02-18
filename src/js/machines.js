@@ -153,20 +153,6 @@ export class Refuel {
   }
 }
  
-
-// SMELTER EVENT // PLEASE USE WITH ID SMELTER OBJECT INV
-
-const interactiveWindow = (id, s, invObj) => {
-  s.smelt(id, invObj)
-}
-
-document.getElementById("smelter-container").addEventListener("click", (event) => {
-  const {id} = event.target;
-  interactiveWindow(id, smelter, inv)
-  console.log(inv);
-});
-
-
 // SMELTER EVENT // PLEASE USE VENDOR OBJ AS ARGUMENT / INVENTORY OBJ ASWELL // everything else works on its own
 
 const vendorEvents = (vendorObj, inventoryObj) => {
@@ -178,3 +164,15 @@ const vendorEvents = (vendorObj, inventoryObj) => {
     if (isValid(event)) vendorObj.sell(event.target.id, inventoryObj);
   });
 };
+
+// SMELTER EVENT // PLEASE USE WITH ID SMELTER OBJECT INV
+
+// const interactiveWindow = (id, s, invObj) => {
+//   s.smelt(id, invObj);
+// };
+
+// document.getElementById("smelter-container").addEventListener("click", (event) => {
+//   const {id} = event.target;
+//   interactiveWindow(id, smelter, inv)
+//   console.log(inv);
+// });

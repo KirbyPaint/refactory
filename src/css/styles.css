@@ -1,10 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Rozha+One&display=swap');
-body {
+#gameworld {
   display: flex;
   flex-wrap: nowrap;
 }
 
-body>div {
+#gameworld>div {
   display: flex;
   flex-direction: column;
 }
@@ -24,19 +24,38 @@ body>div {
   border: 5px solid red;
 }
 
+.p {
+  text-align: left;
+}
+
+#splash {
+  font-size: large;
+  z-index: 99999;
+  position: fixed;
+  text-align: center;
+  background-color: white;
+  padding: 15px;
+  border-style: solid;
+  border-color: red;
+  margin-left: 20%;
+  margin-top: 10%;
+  width: 60%;
+  height: 60%;
+}
+
 /* Character placement class */
 .character {
   border: 1px solid blue !important;
 }
 
-body>div>div {
+#gameworld>div>div {
   /* border: 2px solid black; */
   width:50px;
   height:50px;
   background-size: cover;
 }
 
-body>div>div:hover {
+#gameworld>div>div:hover {
   border: 1px solid red !important;
 }
 
@@ -64,6 +83,13 @@ body>div>div:hover {
   box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
   background-color: #ffe77aff;
   border: 1px solid black;
+  display: none;
+
+  /* positioning */
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  margin-left: -150px;
 }
 #smelter-container > * {
   color: white;

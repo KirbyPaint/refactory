@@ -16,6 +16,8 @@ export default class Player {
     this.credits = 0;
     this.location_x = x;
     this.location_y = y;
+    this.last_x = 0;
+    this.lasy_y = 0;
   }
 
   addInventory(key, amount) {
@@ -88,10 +90,10 @@ export default class Player {
   // Displays tool material and type as string
   // Only use for displays, not functionality.
   checkTool() {
-    if (this.toolType === "Hand") {
-      return this.toolType;
-    } else {
+    if (this.toolType === "Axe" || this.toolType === "Pickaxe") {
       return this.toolMaterial + " " + this.toolType;
+    } else {
+      return this.toolType;
     }
   }
 

@@ -169,33 +169,21 @@ export const vendorEvents = (vendorObj, inventoryObj) => {
   });
 };
 
-
-// const vendorEvents = (vendorObj, inventoryObj) => {
-//   const isValid = (event) => ['tree', 'copperIngot', 'ironIngot', 'goldIngot'].includes(event.target.id);
-//   document.getElementById("buy").addEventListener("click", (event) => {
-//     if (isValid(event)) vendorObj.buy(event.target.id, inventoryObj);
-//   });
-//   document.getElementById("sell").addEventListener("click", (event) => {
-//     if (isValid(event)) vendorObj.sell(event.target.id, inventoryObj);
-//   });
-// };
-
-
 // SMELTER EVENT // PLEASE USE WITH ID SMELTER OBJECT INV
 
-const interactiveWindow = (id, s, invObj) => {
-  s.smelt(id, invObj);
-};
+// const interactiveWindow = (id, s, invObj) => {
+//   s.smelt(id, invObj);
+// };
 
 /// ADD FOR SMELTER CLOSE BUTTON
 
 
-document.getElementById('smelter-close').addEventListener('click', () => {
-  document.getElementById('smelter-container').style.display = 'none';
-});
+// document.getElementById('smelter-close').addEventListener('click', () => {
+//   document.getElementById('smelter-container').style.display = 'none';
+// });
 
 
-document.getElementById("smelter-container").addEventListener("click", (event) => {
-  const {id} = event.target;
-  interactiveWindow(id, smelter, inv);
-});
+// document.getElementById("smelter-container").addEventListener("click", (event) => {
+//   const {id} = event.target;
+//   interactiveWindow(id, smelter, inv);
+// });

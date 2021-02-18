@@ -90,11 +90,12 @@ export default class Player {
   // Displays tool material and type as string
   // Only use for displays, not functionality.
   checkTool() {
-    if (this.toolType === "Axe" || this.toolType === "Pickaxe") {
-      return this.toolMaterial + " " + this.toolType;
-    } else {
-      return this.toolType;
-    }
+    // if (this.toolType === "Axe" || this.toolType === "Pickaxe") {
+    //   return this.toolMaterial + " " + this.toolType;
+    // } else {
+    //   return this.toolType;
+    // }
+    return this.toolType;
   }
 
   changeTool(currentTool) {

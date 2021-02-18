@@ -21,6 +21,9 @@ function renderText(character) {
   $("#playerCopper").text(character.inventory.copper);
   $("#playerIron").text(character.inventory.iron);
   $("#playerGold").text(character.inventory.gold);
+  $("#playerCopperIngots").text(character.inventory.copperIngot);
+  $("#playerIronIngots").text(character.inventory.ironIngot);
+  $("#playerGoldIngots").text(character.inventory.goldIngot);
   $("#playerCoal").text(character.inventory.coal);
   $("#playerTree").text(character.inventory.tree);
 }
@@ -152,6 +155,7 @@ $(document).ready(function () {
 
   const interactiveWindow = (id, s, invObj) => {
     s.smelt(id, invObj);
+    console.log(character.inventory);
   };
 
   window.addEventListener("click", function () {

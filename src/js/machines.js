@@ -154,7 +154,7 @@ export class Refuel {
 }
  
 // SMELTER EVENT // PLEASE USE VENDOR OBJ AS ARGUMENT / INVENTORY OBJ ASWELL // everything else works on its own
-// UPDATED
+
 const vendorEvents = (vendorObj, inventoryObj) => {
   const isValid = (event) => ['tree', 'copperIngot', 'ironIngot', 'goldIngot'].includes(event.target.id);
   document.getElementById('vendor-close').addEventListener('click', () => {
@@ -167,6 +167,18 @@ const vendorEvents = (vendorObj, inventoryObj) => {
     if (isValid(event)) vendorObj.sell(event.target.id, inventoryObj);
   });
 };
+
+
+// const vendorEvents = (vendorObj, inventoryObj) => {
+//   const isValid = (event) => ['tree', 'copperIngot', 'ironIngot', 'goldIngot'].includes(event.target.id);
+//   document.getElementById("buy").addEventListener("click", (event) => {
+//     if (isValid(event)) vendorObj.buy(event.target.id, inventoryObj);
+//   });
+//   document.getElementById("sell").addEventListener("click", (event) => {
+//     if (isValid(event)) vendorObj.sell(event.target.id, inventoryObj);
+//   });
+// };
+
 
 // SMELTER EVENT // PLEASE USE WITH ID SMELTER OBJECT INV
 

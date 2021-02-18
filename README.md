@@ -43,7 +43,16 @@ _Discord: @KirbyPaint#0751_
 
 ## Technologies and Resources Used
 
-_HTML, CSS (Bootstrap), JavaScript (jQuery), npm, webpack_  
+* _HTML5/CSS3_
+* _Bootstrap 4.6.0_
+* _JavaScript ES6_
+* _jQuery 3.5.1_
+* _Node Package Manager 6.14.9_
+* _webpack 4.39.3_
+* _Babel 7.6.4_
+* _eslint 6.3.0_
+* _Jest 24.9.0_
+* _perlin simplex 0.0.3_
 
 ### License Information
 

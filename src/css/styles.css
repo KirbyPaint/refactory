@@ -23,6 +23,25 @@ body>div {
   border: 5px solid red;
 }
 
+.p {
+  text-align: left;
+}
+
+#modal {
+  font-size: large;
+  z-index: 99999;
+  position: fixed;
+  text-align: center;
+  background-color: white;
+  padding: 15px;
+  border-style: solid;
+  border-color: red;
+  margin-left: 20%;
+  margin-top: 10%;
+  width: 60%;
+  height: 60%;
+}
+
 /* Character placement class */
 .character {
   border: 1px solid blue !important;

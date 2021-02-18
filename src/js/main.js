@@ -145,7 +145,7 @@ $(document).ready(function() {
       else if (character.toolType === "Hand") {
         const machine = new MiningMachine(mouse_x, mouse_y);
         node = (gameworld.mine(mouse_x,mouse_y, 0));
-        gameworld.world[mouse_x][mouse_y].machine = machine;
+        gameworld.addMachine(mouse_x,mouse_y,machine);
         machine.mineNode(gameworld);
       }
 
@@ -172,7 +172,7 @@ $(document).ready(function() {
     if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
       if (character.toolType === "Hand") {
         const machine = new Smelter(mouse_x, mouse_y);
-        gameworld.world[mouse_x][mouse_y].machine = machine;
+        gameworld.addMachine(mouse_x,mouse_y,machine);
         gameworld.renderChunk(mouse_x,mouse_y,"player hand");
       }
     }

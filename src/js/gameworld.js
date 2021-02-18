@@ -108,8 +108,15 @@ export default class GameWorld {
 
   derenderPlayer(x,y) {
     let style = $(`#${x}_${y}`).css("background-image");
-    let newstyle = style.replace(`url("http://localhost:8080/assets/gametextures/Player.png"),`,"");
-    $(`#${x}_${y}`).css("background-image",newstyle);
+    
+    let splitstyle = style.split(",");
+
+    for (let i=0; i<splitstyle.length; i++) {
+      if (splitstyle[i].includes("Player.png")) {
+        style = style.replace(`${splitstyle[i]},`,"");
+      }
+    }
+    $(`#${x}_${y}`).css("background-image",style);
   }
 
 
@@ -133,8 +140,8 @@ export default class GameWorld {
       endy =   y;
     }
   
-    for (let a=startx; a<=endx || a>200; a++) {
-      for (let k=starty; k<=endy || k>200; k++) {
+    for (let a=startx; a<=endx; a++) {
+      for (let k=starty; k<=endy; k++) {
 
         let machineTexture = "";
         
@@ -342,10 +349,8 @@ export default class GameWorld {
   }
 
   removeMachine(x,y) {
-    if (this.world[y][x].machine != "none") {
-      let removedMachine = this.world[y][x].machine;
+    if (this.world[y][x].machine != {}) {
       this.world[y][x].machine = {};
-      return [removedMachine,1];
     } else {
       return false;
     }

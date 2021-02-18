@@ -7,6 +7,10 @@ import Player from './player.js';
 import { MiningMachine, Smelter } from './machines.js';
 // import { MiningMachine } from './machines.js';
 
+$("#hideSplash").click(function(){
+  $("#splash").hide();
+});
+
 function renderText(character) {
   $("#x").text(character.location_x);
   $("#y").text(character.location_y);

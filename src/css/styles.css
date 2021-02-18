@@ -27,7 +27,7 @@ body>div {
   text-align: left;
 }
 
-#modal {
+#splash {
   font-size: large;
   z-index: 99999;
   position: fixed;

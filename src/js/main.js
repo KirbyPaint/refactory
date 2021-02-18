@@ -148,10 +148,8 @@ $(document).ready(function () {
         let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("tree"), "MiningMachine");
         if (placementResponse === "occupied") {
           let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
-          console.log(`this machine on ${thisMachine.on}`);
           thisMachine.withdrawal(character);
           if (thisMachine.on == false) {
-            console.log("CHECK I");
             gameworld.removeMachine(mouse_y, mouse_x); // YES THESE DO NEED TO BE y, x
             gameworld.renderChunk(mouse_x, mouse_y, "player hand");
           }
@@ -189,41 +187,21 @@ $(document).ready(function () {
     const player_y = parseInt(character.location_y);
     const mouse_x = parseInt(coords[0]);
     const mouse_y = parseInt(coords[1]);
-    console.log("CHECK A");
     if (character.validClick(player_x, player_y, mouse_x, mouse_y)) {
-      console.log("CHECK B");
       if (character.toolType === "Hand") {
-        console.log("CHECK C");
         if (character.checkInventory("coal") >= 50) {
-          console.log("CHECK D");
           let placementResponse = gameworld.addMachine(mouse_x, mouse_y, 50, character.checkInventory("coal"), "Smelter");
           if (placementResponse === "occupied") {
-            console.log("CHECK E");
-            // alert("There is already a machine here:");
             let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
             thisMachine.withdrawal(character);
           } else if (placementResponse === "success") {
-            console.log("CHECK F");
             const machine = new Smelter(mouse_x, mouse_y);
             gameworld.world[mouse_x][mouse_y].machine = machine;
-            // machine.mineNode(gameworld);
-            // Miner idles until filled
             character.inventory.coal -= 50;
-            // let currentMachineStorage = gameworld.world[mouse_x][mouse_y].machine;
-            // console.log(currentMachineStorage);
-            // $("#resource").text(currentMachineStorage[0]);
-            // $("#quantity").text(currentMachineStorage[1]);
-
-            // const machine = new Smelter(mouse_x, mouse_y);
-            // gameworld.world[mouse_x][mouse_y].machine = machine;
-            // gameworld.renderChunk(mouse_x, mouse_y, "player hand");
-            // character.inventory.coal -= 50;
           } else if (placementResponse === "not enough") {
-            console.log("CHECK G");
             alert("need more coal to create smelting machine");
           }
         } else {
-          console.log("CHECK H");
           alert("need more coal to create smelting machine");
         }
       }

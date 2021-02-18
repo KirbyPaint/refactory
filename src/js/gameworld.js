@@ -90,7 +90,7 @@ export default class GameWorld {
             max:100,
             amount:0
           },
-          machine:{},
+          machine: undefined,
           type:"grass",
           amount:0,
           tile: Math.round(Math.random()*5)
@@ -108,8 +108,15 @@ export default class GameWorld {
 
   derenderPlayer(x,y) {
     let style = $(`#${x}_${y}`).css("background-image");
-    let newstyle = style.replace(`url("http://localhost:8080/assets/gametextures/Player.png"),`,"");
-    $(`#${x}_${y}`).css("background-image",newstyle);
+    
+    let splitstyle = style.split(",");
+
+    for (let i=0; i<splitstyle.length; i++) {
+      if (splitstyle[i].includes("Player.png")) {
+        style = style.replace(`${splitstyle[i]},`,"");
+      }
+    }
+    $(`#${x}_${y}`).css("background-image",style);
   }
 
 
@@ -133,23 +140,24 @@ export default class GameWorld {
       endy =   y;
     }
   
-    for (let a=startx; a<=endx || a>200; a++) {
-      for (let k=starty; k<=endy || k>200; k++) {
+    for (let a=startx; a<=endx; a++) {
+      for (let k=starty; k<=endy; k++) {
 
         let machineTexture = "";
         
-        
-        if (this.world[a][k].machine.name === "MiningMachine") {
-          if (this.world[a][k].machine.on) {
-            machineTexture = `url(${mineOn}),`;
-          } else {
-            machineTexture = `url(${mineOff}),`;
-          }
-        } else if (this.world[a][k].machine.name === "Smelter") {
-          if (this.world[a][k].machine.on) {
-            machineTexture = `url(${refineOn}),`;
-          } else {
-            machineTexture = `url(${refineOff}),`;
+        if (this.world[a][k].machine != undefined) {
+          if (this.world[a][k].machine.name === "MiningMachine") {
+            if (this.world[a][k].machine.on) {
+              machineTexture = `url(${mineOn}),`;
+            } else {
+              machineTexture = `url(${mineOff}),`;
+            }
+          } else if (this.world[a][k].machine.name === "Smelter") {
+            if (this.world[a][k].machine.on) {
+              machineTexture = `url(${refineOn}),`;
+            } else {
+              machineTexture = `url(${refineOff}),`;
+            }
           }
         }
 
@@ -330,22 +338,17 @@ export default class GameWorld {
     return this.world[y][x];
   }
 
-  addMachine(x,y,machine) {
-    if (this.world[y][x].machine == {}) {
-      this.world[y][x]["machine"] = machine;
-
-      console.log(this.world[x][y].machine);
-
+  addMachine(x,y,machine1) {
+    if (this.world[x][y].machine == undefined) {
+      this.world[x][y].machine = machine1;
     } else {
-      return false;
+      return "occupied";
     }
   }
 
   removeMachine(x,y) {
-    if (this.world[y][x].machine != "none") {
-      let removedMachine = this.world[y][x].machine;
-      this.world[y][x].machine = {};
-      return [removedMachine,1];
+    if (this.world[y][x].machine != undefined) {
+      this.world[y][x].machine = undefined;
     } else {
       return false;
     }

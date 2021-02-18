@@ -95,6 +95,10 @@ export default class Player {
     }
   }
 
+  changeTool(currentTool) {
+    this.toolType = currentTool;
+  }
+
   cycleTool(currentTool) {
     if (currentTool === "Pickaxe") {
       this.toolType = "Axe";

@@ -40,42 +40,13 @@
   border: 1px solid red !important;
 }
 
-#tools {
+#controls {
   position: fixed;
-  z-index: 1;
-  bottom:10%;
+  left:0;
+  bottom:0;
 }
 
-/* body>div:hover {
-  background-color: orange;
-} */
-
-
-/* SMELTER */
-
-#smelter-container {
-  display: flex;
-  flex-direction: column;
-  width: 300px;
-  align-items: center;
-  padding-bottom: 20px;
-  font-family: 'Rozha One', serif;
-  font-style: bolder;
-  box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
-  background-color: #ffe77aff;
-  border: 1px solid black;
-}
-#smelter-container > * {
-  color: white;
-}
-#title-smelt {
-  color: black;
-  padding: 5px;
-}
-#smelter-container > button {
- padding: 15px;
- margin: 2px;
- width: 75%;
- background-color: green;
- box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
+#controls>button {
+  height: 5vh;
+  font-size: 5em;
 }

@@ -197,6 +197,33 @@ export default class GameWorld {
     }
   }
 
+  renderNoise(type=4, one=0.5, two=0.5, three=0.5) {
+
+    let startx;
+    let starty;
+    let endx;
+    let endy; 
+    startx = 0;
+    starty = 0;
+    endx = 199;
+    endy = 199;
+  
+    for (let a=startx; a<=endx; a++) {
+      for (let k=starty; k<=endy; k++) {
+
+        if (type == 1) {
+          $(`#${a}_${k}`).css("background-color",`rgba(10,10,200,${this.world[a][k].type1})`);
+        } else if (type == 2) {
+          $(`#${a}_${k}`).css("background-color",`rgba(10,200,10,${this.world[a][k].type2})`);
+        } else if (type == 3) {
+          $(`#${a}_${k}`).css("background-color",`rgba(200,10,10,${this.world[a][k].type3})`);
+        } else if (this.world[a][k].type1 > one && this.world[a][k].type2 > two && this.world[a][k].type3 > three) {
+          $(`#${a}_${k}`).css("background-color",`rgba(200,10,10,${this.world[a][k].type3})`);
+        }
+      }
+    }
+  }
+
   //terrain generators
 
   generateTerrain(sizex,sizey,density) {
@@ -219,6 +246,9 @@ export default class GameWorld {
 
     for (let i=0; i<this.width; i++) {
       for (let j=0; j<this.height; j++) {
+        this.world[i][j].type1 = materialAllowed[i][j];
+        this.world[i][j].type2 = materialAvailable[i][j];
+        this.world[i][j].type3 = materialPlaced[i][j];
         
         if (materialAllowed[i][j] > one && materialAvailable[i][j] > two && materialPlaced[i][j] > three) {
           if (this.world[i][j].type == "grass") {

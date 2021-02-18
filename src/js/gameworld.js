@@ -338,9 +338,14 @@ export default class GameWorld {
     return this.world[y][x];
   }
 
-  addMachine(x,y,machine1) {
+  addMachine(x,y,cost,money,machine1) {
     if (this.world[x][y].machine == undefined) {
-      this.world[x][y].machine = machine1;
+      if (cost < money) {
+        this.world[x][y].machine = machine1;
+        return "success";
+      } else {
+        return "not enough";
+      }
     } else {
       return "occupied";
     }

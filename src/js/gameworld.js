@@ -17,6 +17,7 @@ import mineOff from '../assets/gametextures/MiningMachine.png';
 import refineOn from '../assets/gametextures/RefineryLight.png';
 import refineOff from '../assets/gametextures/Refinery.png';
 
+import vendor from '../assets/gametextures/Vendor.png';
 
 import copper from '../assets/gametextures/CopperNode.png';
 import iron from '../assets/gametextures/IronNode.png';
@@ -158,6 +159,8 @@ export default class GameWorld {
             } else {
               machineTexture = `url(${refineOff}),`;
             }
+          } else if (this.world[a][k].machine.name === "Vendor") {
+              machineTexture = `url(${vendor}),`;
           }
         }
 

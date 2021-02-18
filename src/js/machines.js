@@ -155,10 +155,11 @@ export class Refuel {
  
 // SMELTER EVENT // PLEASE USE VENDOR OBJ AS ARGUMENT / INVENTORY OBJ ASWELL // everything else works on its own
 
-const vendorEvents = (vendorObj, inventoryObj) => {
+export const vendorEvents = (vendorObj, inventoryObj) => {
   const isValid = (event) => ['tree', 'copperIngot', 'ironIngot', 'goldIngot'].includes(event.target.id);
+  const vendorId = document.getElementById('vendor-container')
   document.getElementById('vendor-close').addEventListener('click', () => {
-    document.getElementById('vendor-container').style.display = 'none';
+    vendorId.style.display = 'none';
   });
   document.getElementById("buy").addEventListener("click", (event) => {
     if (isValid(event)) vendorObj.buy(event.target.id, inventoryObj);

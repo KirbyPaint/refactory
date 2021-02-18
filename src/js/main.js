@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/styles.css';
 import GameWorld from '../js/gameworld.js';
 import Player from './player.js';
-import { MiningMachine, Smelter } from './machines.js';
+import { MiningMachine, Smelter, Vendor} from './machines.js';
 // import { MiningMachine } from './machines.js';
 
 $("#hideSplash").click(function(){
@@ -45,6 +45,9 @@ $(document).ready(function () {
   let gameworld = new GameWorld();
   gameworld.generateWorld();
   let character = new Player("Wood", "Pickaxe", 100, 100);
+  // let vendor = new Vendor(100, 91);
+  // gameworld.renderChunk(100, 91, "player hand");
+  // console.log(vendor);
 
   gameworld.renderChunk();
 
@@ -89,7 +92,7 @@ $(document).ready(function () {
     let player_x = character.location_x;
     let player_y = character.location_y;
 
-    if (event.key == "ArrowLeft") {
+    if (event.key == "ArrowLeft" || event.key == "a") {
       gameworld.derenderPlayer(player_x, player_y);// Removes class from prev. square
       character.move(-1, 0, "left");            // Move character object
       player_x = character.location_x;                 // Update current character's horiz. coord.
@@ -101,7 +104,7 @@ $(document).ready(function () {
       $("#spawnWidth").text(charCenterWidth);
       $("#spawnHeight").text(charCenterHeight);
     }
-    else if (event.key == "ArrowUp") {
+    else if (event.key == "ArrowUp" || event.key == "w") {
       gameworld.derenderPlayer(player_x, player_y);
       character.move(0, -1, "up");
       player_y = character.location_y;
@@ -113,7 +116,7 @@ $(document).ready(function () {
       $("#spawnWidth").text(charCenterWidth);
       $("#spawnHeight").text(charCenterHeight);
     }
-    else if (event.key == "ArrowRight") {
+    else if (event.key == "ArrowRight" || event.key == "d") {
       gameworld.derenderPlayer(player_x, player_y);
       character.move(1, 0, "right");
       player_x = character.location_x;
@@ -125,7 +128,7 @@ $(document).ready(function () {
       $("#spawnWidth").text(charCenterWidth);
       $("#spawnHeight").text(charCenterHeight);
     }
-    else if (event.key == "ArrowDown") {
+    else if (event.key == "ArrowDown" || event.key == "s") {
       gameworld.derenderPlayer(player_x, player_y);
       character.move(0, 1, "down");
       player_y = character.location_y;
@@ -145,12 +148,15 @@ $(document).ready(function () {
     }
   }, true);
 
+  document.getElementById('smelter-close').addEventListener('click', () => {
+    document.getElementById('smelter-container').style.display = 'none';
+  });
+
   document.getElementById("smelter-container").addEventListener("click", (event) => {
     const {id} = event.target;
     let smelter = gameworld.world[character.last_x][character.last_y].machine;
     let inv = character;
     interactiveWindow(id, smelter, inv);
-    console.log(inv);
   });
 
   const interactiveWindow = (id, s, invObj) => {
@@ -185,7 +191,7 @@ $(document).ready(function () {
           }
         } else if (thisMachine.name === "Smelter") {
           // Code for the smelter click event
-          $("#smelter-container").show();
+          document.getElementById('smelter-container').style.display = 'flex';
           console.log("display UI");
           character.last_x = mouse_x;
           character.last_y = mouse_y;

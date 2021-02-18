@@ -45,13 +45,14 @@ body, html {
   position: fixed;
   text-align: center;
   background-color: white;
-  padding: 15px;
   border-style: solid;
   border-color: red;
-  margin-left: 20%;
-  margin-top: 10%;
   width: 60%;
   height: 60%;
+  top:50%;
+  left:50%;
+  font-size: 100%;
+  transform: translate(-50%,-50%);
 }
 
 /* Character placement class */
@@ -89,6 +90,7 @@ body, html {
   flex-direction: column;
   width: 300px;
   align-items: center;
+  justify-content: center;
   padding-bottom: 20px;
   font-family: 'Rozha One', serif;
   font-style: bolder;
@@ -103,6 +105,12 @@ body, html {
   left: 50%;
   margin-left: -150px;
 }
+#smelt-buttons {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 #smelter-container > * {
   color: white;
 }
@@ -110,7 +118,7 @@ body, html {
   color: black;
   padding: 5px;
 }
-#smelter-container > button {
+#smelter-container > div > button {
   padding: 15px;
   margin: 2px;
   width: 75%;
@@ -149,11 +157,14 @@ body, html {
   color: black;
   padding: 5px;
 }
-#vendor-container > div > button {
+#vendor-container > div > div > button {
 
   padding: 15px;
   margin: 2px;
   width: 75%;
   background-color: green;
   box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
+}
+#vendor-close, #smelter-close {
+  color: black;
 }

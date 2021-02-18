@@ -11,7 +11,11 @@ This project is a factory game clone. The player can traverse a world rich with 
 
 ## Controls
 
-Move the character with the arrow keys. Click on a square to mine the square. Uze the number 0 key to cycle between equipped tools.
+Move the character with the arrow keys or WASD. Click a button in the lower-left corner to switch to that tool, or choose either the Miner or Smelter buttons to togle machine placement. Use the number 0 key to cycle between the "Hand", "Pick", or "Axe" tools.  
+
+The player can mine or place blocks up to 7 blocks away. When placing a Miner tool, place the Miner on a node (coal, iron, copper, gold, or tree) and the miner will begin mining that node. Once it is finished mining, the lightbulb will turn off, and you may remove the Miner by clicking on it with the Hand tool.  
+
+The player may also place Smelters in the world to refine your collected ores and wood into ore ingots and coal, respectively. Place the Smelter with the Smelter button, and click on it with the Hand tool to open the Smelt window. The Smelter is permanently placed in the world, and cannot be picked up, though a player may have as many Smelters in the world as they have materials for.
 
 ## Specs
 
@@ -33,9 +37,14 @@ Move the character with the arrow keys. Click on a square to mine the square. Uz
 
 > npm run start
 
-* The project will then open in your default web browser
+* The project will then open in your default web browser.
+
+Note - the centering of the window does depend on the initial browser size. It is highly recommended that you open and set your browser to the preferred size BEFORE executing `npm run start`
 
 ## Known Bugs
+
+* If browser is re-sized, the game window doesn't properly center on the player. This is caused during initial world rendering.
+* If the browser size is too small, some text may be cut off.
 
 ## Support and contact details
 
@@ -58,4 +67,4 @@ _Discord: @KirbyPaint#0751_
 
 _GNU Public License_
 
-Copyright (c) 2021 **_KirbyPaint_**
+Copyright (c) 2021 **_The ReFactory Dev Team_**

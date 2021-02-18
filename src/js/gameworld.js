@@ -123,7 +123,7 @@ export default class GameWorld {
 
   renderChunk(x="none",y="none",incoming="none") {
     if (incoming != "none") {
-      // console.log(`${incoming}`, performance.now());
+      // empty
     }
     let startx;
     let starty;
@@ -160,7 +160,7 @@ export default class GameWorld {
               machineTexture = `url(${refineOff}),`;
             }
           } else if (this.world[a][k].machine.name === "Vendor") {
-              machineTexture = `url(${vendor}),`;
+            machineTexture = `url(${vendor}),`;
           }
         }
 

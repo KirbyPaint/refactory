@@ -9,13 +9,11 @@ body, html {
   height: 100%;
   width: 100%;
 }
-
 #gameworld {
   display: flex;
   flex-wrap: nowrap;
   margin:200px;
 }
-
 #gameworld>div {
   display: flex;
   flex-direction: column;
@@ -44,7 +42,6 @@ body, html {
   display: flex;
   flex-direction: row;
 }
-
 #hud>div {
   border:2px solid black;
   border-radius: 10px;
@@ -57,13 +54,9 @@ body, html {
   margin-top: 10px;
   text-align: center;
 }
-
-
-
 .p {
   text-align: left;
 }
-
 #splash {
   font-size: 35px;
   z-index: 99999;
@@ -79,36 +72,24 @@ body, html {
   font-size: 100%;
   transform: translate(-50%,-50%);
 }
-
 /* Character placement class */
 .character {
   border: 1px solid blue !important;
 }
-
 #gameworld>div>div {
-  /* border: 2px solid black; */
   width:50px;
   height:50px;
   background-size: cover;
 }
-
 #gameworld>div>div:hover {
   border: 1px solid red !important;
 }
-
 #tools {
   position: fixed;
   z-index: 1;
   bottom:10%;
 }
-
-/* body>div:hover {
-  background-color: orange;
-} */
-
-
 /* SMELTER */
-
 #smelter-container {
   display: none;
   display: flex;
@@ -123,7 +104,6 @@ body, html {
   background-color: #ffe77aff;
   border: 1px solid black;
   display: none;
-
   /* positioning */
   position: fixed;
   bottom: 50%;
@@ -150,9 +130,7 @@ body, html {
   background-color: green;
   box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
 }
-
 /* VENDOR */
-
 #vendor-container {
   display: none;
   width: 300px;
@@ -163,7 +141,6 @@ body, html {
   box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
   background-color: #ffe77aff;
   border: 1px solid black;
-
   /* positioning */
   position: fixed;
   bottom: 50%;
@@ -183,7 +160,6 @@ body, html {
   padding: 5px;
 }
 #vendor-container > div > div > button {
-
   padding: 15px;
   margin: 2px;
   width: 75%;

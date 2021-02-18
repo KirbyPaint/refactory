@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import '../css/styles.css';
 import GameWorld from '../js/gameworld.js';
 import Player from './player.js';
-import { MiningMachine, Smelter, Vendor} from './machines.js';
+import { MiningMachine, Smelter } from './machines.js';
 // import { MiningMachine } from './machines.js';
 
 $("#hideSplash").click(function(){
@@ -35,7 +35,7 @@ function renderText(character) {
 
 
 function renderInventory(player) {
-  let cycle = Object.keys(player.inventory)
+  let cycle = Object.keys(player.inventory);
   let inventory = "";
   cycle.forEach(key => {
     if (player.inventory[key] != 0) {
@@ -43,9 +43,9 @@ function renderInventory(player) {
       `<div id="inventorySlot">
         <p id="Iamount">${player.inventory[key]}</p>
         <p id="Iname">${key}</p>
-      </div>`
+      </div>`;
     }
-  })
+  });
   $("#hud").html(inventory);
 }
 

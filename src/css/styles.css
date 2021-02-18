@@ -20,7 +20,16 @@ body, html {
   display: flex;
   flex-direction: column;
 }
-
+#tools button{
+  border-radius: 5px;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 6px;
+  border: 2px solid black;
+  font-weight: 800;
+  color: black;
+  background-color: rgba(0, 128, 0, 0.93);
+  box-shadow: inset 2px 1px 20px 1px rgba(0, 0, 0, 0.288);
+}
 /* HUD display box */
 #hud {
   font-size: 15px;

@@ -27,16 +27,20 @@ export class Vendor {
       inventoryObj.inventory[item] -= 1;
       this[item].quantity += 1;
     } else {
-      alert(`Not Enough ${item}`);
+      alert(`Not enough in inventory.`);
     }
   }
   buy(item, inventoryObj) {
-    if (inventoryObj.credits >= this[item].buy) {
-      this[item].quantity -= 1;
-      inventoryObj.credits -= this[item].buy;
-      inventoryObj.inventory[item] += 1;
+    if (this[item].quantity > 0) {
+      if (inventoryObj.credits >= this[item].buy) {
+        this[item].quantity -= 1;
+        inventoryObj.credits -= this[item].buy;
+        inventoryObj.inventory[item] += 1;
+      } else {
+        alert('Not enough credits.');
+      }
     } else {
-      alert('Not Enough Money');
+      alert('Vendor is sold out.');
     }
   }
 }
@@ -59,7 +63,7 @@ export class MiningMachine {
     this.on = true;
     this.fuel = 500;
     this.storage = ['', 0];
-    this.miningPower = 1;
+    this.miningPower = 10;
     this.x = x;
     this.y = y;
   }
@@ -82,7 +86,7 @@ export class MiningMachine {
         this.storage[1] += value;
         this.fuel -= 1;
       }
-    }, 10000);
+    }, 2000);
   }
 }
 /////////////////////////////////////////////////////// Smelter Info //////////////////////////////////////////////////////////////
@@ -101,7 +105,7 @@ export class Smelter {
     this.name = "Smelter";
     this.x = x;
     this.y = y;
-    this.fuel = 5;
+    this.fuel = 100;
     this.conversion = 3;
   }
   smelt(type, inventoryObj) {
@@ -161,3 +165,16 @@ document.getElementById("smelter-container").addEventListener("click", (event) =
   interactiveWindow(id, smelter, inv)
   console.log(inv);
 });
+
+
+// SMELTER EVENT // PLEASE USE VENDOR OBJ AS ARGUMENT / INVENTORY OBJ ASWELL // everything else works on its own
+
+const vendorEvents = (vendorObj, inventoryObj) => {
+  const isValid = (event) => ['tree', 'copperIngot', 'ironIngot', 'goldIngot'].includes(event.target.id);
+  document.getElementById("buy").addEventListener("click", (event) => {
+    if (isValid(event)) vendorObj.buy(event.target.id, inventoryObj);
+  });
+  document.getElementById("sell").addEventListener("click", (event) => {
+    if (isValid(event)) vendorObj.sell(event.target.id, inventoryObj);
+  });
+};

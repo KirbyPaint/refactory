@@ -145,20 +145,17 @@ $(document).ready(function () {
         node = (gameworld.mine(mouse_x, mouse_y, 1)); // Axe mines badly
       }
       else if (character.toolType === "Hand") {
-        if (character.checkInventory("tree") >= 50) {
-          let placementResponse = gameworld.addMachine(mouse_x, mouse_y, "MiningMachine")
-          if (placementResponse === "occupied") {
-            alert("There is already a machine here:");
-            let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
-            thisMachine.withdrawal(character);
-          } else {
-              const machine = new MiningMachine(mouse_x, mouse_y);
-              node = (gameworld.mine(mouse_x, mouse_y, 0));
-              gameworld.world[mouse_x][mouse_y].machine = machine;
-              machine.mineNode(gameworld);
-              character.inventory.tree -= 50;
-          }
-        } else {
+        let placementResponse = gameworld.addMachine(mouse_x, mouse_y,50,character.checkInventory("tree"),"MiningMachine");
+        if (placementResponse === "occupied") {
+          alert("There is already a machine here:");
+          let thisMachine = gameworld.world[mouse_x][mouse_y].machine;
+          thisMachine.withdrawal(character);
+        } else if (placementResponse === "success") {
+          const machine = new MiningMachine(mouse_x, mouse_y);
+          gameworld.world[mouse_x][mouse_y].machine = machine;
+          machine.mineNode(gameworld);
+          character.inventory.tree -= 50;
+        } else if (placementResponse === "not enough") {
           alert("need more trees to create mining machine");
         }
       }

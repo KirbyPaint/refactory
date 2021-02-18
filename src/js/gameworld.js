@@ -90,7 +90,7 @@ export default class GameWorld {
             max:100,
             amount:0
           },
-          machine:{},
+          machine: undefined,
           type:"grass",
           amount:0,
           tile: Math.round(Math.random()*5)
@@ -145,18 +145,19 @@ export default class GameWorld {
 
         let machineTexture = "";
         
-        
-        if (this.world[a][k].machine.name === "MiningMachine") {
-          if (this.world[a][k].machine.on) {
-            machineTexture = `url(${mineOn}),`;
-          } else {
-            machineTexture = `url(${mineOff}),`;
-          }
-        } else if (this.world[a][k].machine.name === "Smelter") {
-          if (this.world[a][k].machine.on) {
-            machineTexture = `url(${refineOn}),`;
-          } else {
-            machineTexture = `url(${refineOff}),`;
+        if (this.world[a][k].machine != undefined) {
+          if (this.world[a][k].machine.name === "MiningMachine") {
+            if (this.world[a][k].machine.on) {
+              machineTexture = `url(${mineOn}),`;
+            } else {
+              machineTexture = `url(${mineOff}),`;
+            }
+          } else if (this.world[a][k].machine.name === "Smelter") {
+            if (this.world[a][k].machine.on) {
+              machineTexture = `url(${refineOn}),`;
+            } else {
+              machineTexture = `url(${refineOff}),`;
+            }
           }
         }
 
@@ -337,20 +338,17 @@ export default class GameWorld {
     return this.world[y][x];
   }
 
-  addMachine(x,y,machine) {
-    if (this.world[y][x].machine == {}) {
-      this.world[y][x]["machine"] = machine;
-
-      console.log(this.world[x][y].machine);
-
+  addMachine(x,y,machine1) {
+    if (this.world[x][y].machine == undefined) {
+      this.world[x][y].machine = machine1;
     } else {
-      return false;
+      return "occupied";
     }
   }
 
   removeMachine(x,y) {
-    if (this.world[y][x].machine != {}) {
-      this.world[y][x].machine = {};
+    if (this.world[y][x].machine != undefined) {
+      this.world[y][x].machine = undefined;
     } else {
       return false;
     }

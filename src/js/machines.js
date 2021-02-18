@@ -157,7 +157,7 @@ export class Refuel {
 
 export const vendorEvents = (vendorObj, inventoryObj) => {
   const isValid = (event) => ['tree', 'copperIngot', 'ironIngot', 'goldIngot'].includes(event.target.id);
-  const vendorId = document.getElementById('vendor-container')
+  const vendorId = document.getElementById('vendor-container');
   document.getElementById('vendor-close').addEventListener('click', () => {
     vendorId.style.display = 'none';
   });
@@ -192,10 +192,10 @@ const interactiveWindow = (id, s, invObj) => {
 
 document.getElementById('smelter-close').addEventListener('click', () => {
   document.getElementById('smelter-container').style.display = 'none';
-})
+});
 
 
 document.getElementById("smelter-container").addEventListener("click", (event) => {
   const {id} = event.target;
-  interactiveWindow(id, smelter, inv)
+  interactiveWindow(id, smelter, inv);
 });

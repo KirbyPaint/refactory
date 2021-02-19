@@ -22,6 +22,10 @@ The player may also place Smelters in the world to refine your collected ores an
 ## Setup/Installation Requirements
 #### This page has been tested with both the most recent versions of Mozilla Firefox and Google Chrome
 
+* Click here: https://jjohan-work.github.io/ReFactory_Host/
+
+OR
+
 * Open Git or your preferred terminal
 * Navigate to your directory for Git projects (not within an existing project)
 * Paste the following in your terminal _exactly as written,_ and in order: 
